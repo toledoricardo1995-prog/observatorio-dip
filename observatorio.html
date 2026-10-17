@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Observatório do Financiamento DIP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  color-scheme: light;
+  --bg: #F6F2E8;
+  --surface: #FBF7EC;
+  --surface-2: #EFE7D2;
+  --text-primary: #1A2230;
+  --text-secondary: #5B5A52;
+  --text-muted: #8A8578;
+  --rule: #DCD2B4;
+  --brass-text: #7C5E1F;
+  --brass-fill: #B68D40;
+  --g2-fill: #007F5C;
+  --gn-fill: #8A8578;
+  --surface-gap: #FBF7EC;
+  --badge-bg: #EFE7D2;
+  --tooltip-bg: #1A2230;
+  --tooltip-text: #F6F2E8;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0F1826;
+    --surface: #162238;
+    --surface-2: #1C2B46;
+    --text-primary: #F1ECDD;
+    --text-secondary: #B7B4A6;
+    --text-muted: #8B92A3;
+    --rule: #2A3A56;
+    --brass-text: #D9B468;
+    --brass-fill: #A67F35;
+    --g2-fill: #128F77;
+    --gn-fill: #8B92A3;
+    --surface-gap: #162238;
+    --badge-bg: #1C2B46;
+    --tooltip-bg: #F1ECDD;
+    --tooltip-text: #10192A;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0F1826;
+  --surface: #162238;
+  --surface-2: #1C2B46;
+  --text-primary: #F1ECDD;
+  --text-secondary: #B7B4A6;
+  --text-muted: #8B92A3;
+  --rule: #2A3A56;
+  --brass-text: #D9B468;
+  --brass-fill: #A67F35;
+  --g2-fill: #128F77;
+  --gn-fill: #8B92A3;
+  --surface-gap: #162238;
+  --badge-bg: #1C2B46;
+  --tooltip-bg: #F1ECDD;
+  --tooltip-text: #10192A;
+}
+
+* { box-sizing: border-box; }
+html { text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: "Public Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.page {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 56px 28px 80px;
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brass-text);
+}
+h1 {
+  font-family: "Newsreader", Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(34px, 6vw, 52px);
+  line-height: 1.06;
+  margin: 10px 0 14px;
+  text-wrap: balance;
+  letter-spacing: -0.01em;
+}
+.subhead {
+  font-family: "Newsreader", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(16px, 2.4vw, 19px);
+  color: var(--text-secondary);
+  max-width: 54ch;
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+.institutional {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  border-left: 2px solid var(--brass-fill);
+  padding-left: 12px;
+  margin: 0 0 16px;
+  max-width: 50ch;
+}
+.byline {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.rule-double {
+  height: 5px;
+  margin: 28px 0 36px;
+  border-top: 2px solid var(--text-primary);
+  border-bottom: 1px solid var(--rule);
+}
+
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-bottom: 48px;
+}
+.stat {
+  background: var(--surface);
+  padding: 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.stat-value {
+  font-family: "IBM Plex Mono", monospace;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  font-size: clamp(22px, 3.4vw, 30px);
+  color: var(--text-primary);
+}
+.stat-label {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 20px;
+  margin-bottom: 56px;
+}
+.chart-stack { display: flex; flex-direction: column; gap: 20px; }
+.chart-panel {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 20px 20px 16px;
+}
+.chart-panel h2 {
+  font-family: "Newsreader", Georgia, serif;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0 0 14px;
+  color: var(--text-primary);
+}
+.chart-svg { width: 100%; display: block; overflow: visible; }
+.bar-label {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  fill: var(--text-secondary);
+}
+.bar-value {
+  font-family: "IBM Plex Mono", monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  font-weight: 500;
+  fill: var(--text-primary);
+}
+.bar-fill--trib, .bar-fill--ano { fill: var(--brass-fill); }
+.bar-fill--g1 { fill: var(--brass-fill); }
+.bar-fill--g2 { fill: var(--g2-fill); }
+.bar-fill--gn { fill: var(--gn-fill); }
+.bar-hit { fill: transparent; cursor: default; }
+.bar-row:hover .bar-fill { filter: brightness(1.12); }
+.baseline { stroke: var(--rule); stroke-width: 1; }
+
+.legend {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 14px 0 0;
+  padding: 0;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+.legend li { display: flex; align-items: center; gap: 6px; }
+.legend b { color: var(--text-primary); font-family: "IBM Plex Mono", monospace; font-weight: 500; margin-left: 2px; }
+.swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.swatch--g1 { background: var(--brass-fill); }
+.swatch--g2 { background: var(--g2-fill); }
+.swatch--gn { background: var(--gn-fill); }
+
+.index-section { margin-bottom: 56px; }
+.index-section h2 {
+  font-family: "Newsreader", Georgia, serif;
+  font-weight: 600;
+  font-size: 24px;
+  margin: 0 0 6px;
+}
+.index-intro { color: var(--text-secondary); margin: 0 0 18px; max-width: 60ch; }
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+}
+.toolbar input, .toolbar select {
+  font-family: "Public Sans", sans-serif;
+  font-size: 13.5px;
+  padding: 8px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--text-primary);
+}
+.toolbar input:focus, .toolbar select:focus {
+  outline: 2px solid var(--brass-fill);
+  outline-offset: 1px;
+}
+#busca { flex: 1; min-width: 200px; }
+.count-readout {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.docket-list { display: flex; flex-direction: column; }
+.docket-row {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.docket-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.badge {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 5px;
+  background: var(--badge-bg);
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+.badge--grau { color: var(--text-secondary); background: transparent; border: 1px solid var(--rule); }
+.processo {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+.data {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+.trecho-det { margin-top: 6px; }
+.trecho-det summary {
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--brass-text);
+  letter-spacing: 0.02em;
+  list-style: none;
+  width: fit-content;
+}
+.trecho-det summary::-webkit-details-marker { display: none; }
+.trecho-det summary::before { content: "trecho \2193 \0020"; }
+.trecho-det[open] summary::before { content: "trecho \2191 \0020"; }
+.trecho-det[open] summary { margin-bottom: 8px; }
+.trecho {
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
+  padding-left: 14px;
+  border-left: 2px solid var(--rule);
+  max-width: 72ch;
+}
+
+.colophon {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--brass-fill);
+  border-radius: 10px;
+  padding: 34px 32px 30px;
+}
+.colophon h3 {
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin: 0 0 18px;
+}
+.colophon h4 {
+  font-family: "Public Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 22px 0 8px;
+}
+.colophon h4:first-of-type { margin-top: 0; }
+.colophon p {
+  font-size: 14px;
+  line-height: 1.68;
+  color: var(--text-secondary);
+  max-width: 72ch;
+  margin: 0 0 10px;
+}
+.colophon strong { color: var(--text-primary); font-weight: 600; }
+.colophon .cite {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 50;
+  background: var(--tooltip-bg);
+  color: var(--tooltip-text);
+  font-family: "Public Sans", sans-serif;
+  font-size: 12.5px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  pointer-events: none;
+  max-width: 260px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+}
+
+@media (max-width: 760px) {
+  .charts-grid { grid-template-columns: 1fr; }
+  .stat-strip { grid-template-columns: repeat(2, 1fr); }
+  .data { margin-left: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <div class="eyebrow">Levantamento empírico &middot; tecnologia própria de coleta e análise</div>
+    <h1>Observatório do<br>Financiamento&nbsp;DIP</h1>
+    <p class="subhead">Decisões que apreciaram pedido concreto de financiamento do devedor em recuperação judicial &mdash; tribunais de justiça brasileiros.</p>
+    <div class="institutional">Pré-projeto de pesquisa submetido ao processo seletivo do Mestrado em Direito Comercial da PUC-SP, sob orientação pretendida do Prof. Ivo Waisberg.</div>
+    <div class="byline">Ricardo Toledo &nbsp;&middot;&nbsp; levantamento preliminar, outubro de 2026</div>
+  </header>
+
+  <div class="rule-double" role="presentation"></div>
+
+  <section class="stat-strip" aria-label="Números do levantamento">
+    <div class="stat">
+      <span class="stat-value">187</span>
+      <span class="stat-label">Decisões&nbsp;concretas</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">127</span>
+      <span class="stat-label">Processos&nbsp;distintos</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">16</span>
+      <span class="stat-label">Tribunais</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">2022&ndash;2026</span>
+      <span class="stat-label">Período&nbsp;coberto</span>
+    </div>
+  </section>
+
+  <section class="charts-grid">
+
+    <div class="chart-panel chart-panel--tall">
+      <h2>Por tribunal</h2>
+      <svg viewBox="0 0 560 376" class="chart-svg chart-svg--trib" role="img" aria-label="Decisões por tribunal">
+    <g class="bar-row" data-tip="TJSP — 61 decisãos (32.6% do total)">
+      <text x="44" y="19" class="bar-label" text-anchor="end">TJSP</text>
+      <rect x="52" y="8" width="474" height="13" rx="3" class="bar-fill bar-fill--trib" />
+      <text x="533" y="19" class="bar-value">61</text>
+      <rect x="52" y="8" width="508" height="23" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="TJGO — 40 decisãos (21.4% do total)">
+      <text x="44" y="42" class="bar-label" text-anchor="end">TJGO</text>
+      <rect x="52" y="31" width="311" height="13" rx="3" class="bar-fill bar-fill--trib" />
+      <text x="370" y="42" class="bar-value">40</text>
+      <rect x="52" y="31" width="508" height="23" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="TJMT — 18 decisãos (9.6% do total)">
+      <text x="44" y="65" class="bar-label" text-anchor="end">TJMT</text>
+      <rect x="52" y="54" width="140" height="13" rx="3" class="bar-fill bar-fill--trib" />
+      <text x="199" y="65" class="bar-value">18</text>
+      <rect x="52" y="54" width="508" height="23" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="TJRJ — 12 decisãos (6.4% do total)">
+      <text x="44" y="88" class="bar-label" text-anchor="end">TJRJ</text>
+      <rect x="52" y="77" width="93" height="13" rx="3" class="bar-fill bar-fill--trib" />
+      <text x="152" y="88" class="bar-value">12</text>
+      <rect x="52" y="77" width="508" height="23" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="TJRS — 12 decisãos (6.4% do total)">
+      <text x="44" y="111" class="bar-label" text-anchor="end">TJRS</text>
+      <rect x="52" y="100" width="93" height="13" rx="3" class="bar-fill bar-fill--trib" />
+      <text x="152" y="111" class="bar-value">12</text>
+      <rect x="52" y="100" width="508" height="23" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="TJPR — 9 decisãos (4.8% do total)">
+      <text x="44" y="134" class="bar-label" text-anchor="end">TJPR</text>
+      <rect x="52" y="123" width="70" height="13" rx="3" class="bar-fill bar-fill--trib" />
+      <text x="129" y="134" class="bar-value">9</text>
+      <rect x="52" y="123" width="508" height="23" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="TJMG — 6 decisãos (3.2% do total)">
+      <text x="44" y="157" class="bar-label" text-anchor="end">TJMG</text>
+      <rect x="52" y="146" width="47" height="13" rx="3" class="bar-fill bar-fill--trib" />
+      <text x="106" y="157" class="bar-value">6</text>
+      <rect x="52" y="146" width="508" height="23" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="TJMS — 6 decisãos (3.2% do total)">
+      <text x="44" y="180" class="bar-label" text-anchor="end">TJMS</text>
+      <rect x="52" y="169" width="47" height="13" rx="3" class="bar-fill bar-fill--trib" />
+      <text x="106" y="180" class="bar-value">6</text>
+      <rect x="52" y="169" width="508" height="23" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="TJAL — 5 decisãos (2.7% do total)">
+      <text x="44" y="203" class="bar-label" text-anchor="end">TJAL</text>
+      <rect x="52" y="192" width="39" height="13" rx="3" class="bar-fill bar-fill--trib" />
+      <text x="98" y="203" class="bar-value">5</text>
+      <rect x="52" y="192" width="508" height="23" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="TJCE — 4 decisãos (2.1% do total)">
+      <text x="44" y="226" class="bar-label" text-anchor="end">TJCE</text>
+      <rect x="52" y="215" width="31" height="13" rx="3" class="bar-fill bar-fill--trib" />
+      <text x="90" y="226" class="bar-value">4</text>
+      <rect x="52" y="215" width="508" height="23" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="TJBA — 4 decisãos (2.1% do total)">
+      <text x="44" y="249" class="bar-label" text-anchor="end">TJBA</text>
+      <rect x="52" y="238" width="31" height="13" rx="3" class="bar-fill bar-fill--trib" />
+      <text x="90" y="249" class="bar-value">4</text>
+      <rect x="52" y="238" width="508" height="23" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="TJPA — 3 decisãos (1.6% do total)">
+      <text x="44" y="272" class="bar-label" text-anchor="end">TJPA</text>
+      <rect x="52" y="261" width="23" height="13" rx="3" class="bar-fill bar-fill--trib" />
+      <text x="82" y="272" class="bar-value">3</text>
+      <rect x="52" y="261" width="508" height="23" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="TJSC — 3 decisãos (1.6% do total)">
+      <text x="44" y="295" class="bar-label" text-anchor="end">TJSC</text>
+      <rect x="52" y="284" width="23" height="13" rx="3" class="bar-fill bar-fill--trib" />
+      <text x="82" y="295" class="bar-value">3</text>
+      <rect x="52" y="284" width="508" height="23" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="TJTO — 2 decisãos (1.1% do total)">
+      <text x="44" y="318" class="bar-label" text-anchor="end">TJTO</text>
+      <rect x="52" y="307" width="16" height="13" rx="3" class="bar-fill bar-fill--trib" />
+      <text x="75" y="318" class="bar-value">2</text>
+      <rect x="52" y="307" width="508" height="23" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="TJSE — 1 decisão (0.5% do total)">
+      <text x="44" y="341" class="bar-label" text-anchor="end">TJSE</text>
+      <rect x="52" y="330" width="8" height="13" rx="3" class="bar-fill bar-fill--trib" />
+      <text x="67" y="341" class="bar-value">1</text>
+      <rect x="52" y="330" width="508" height="23" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="TJPE — 1 decisão (0.5% do total)">
+      <text x="44" y="364" class="bar-label" text-anchor="end">TJPE</text>
+      <rect x="52" y="353" width="8" height="13" rx="3" class="bar-fill bar-fill--trib" />
+      <text x="67" y="364" class="bar-value">1</text>
+      <rect x="52" y="353" width="508" height="23" class="bar-hit" />
+    </g></svg>
+    </div>
+
+    <div class="chart-stack">
+      <div class="chart-panel">
+        <h2>Por ano</h2>
+        <svg viewBox="0 0 440 190" class="chart-svg chart-svg--ano" role="img" aria-label="Decisões por ano">
+  <line x1="47.0" y1="148" x2="393.0" y2="148" class="baseline" />
+  
+    <g class="bar-row" data-tip="2022 — 7 decisãos (3.7% do total)">
+      <rect x="61.0" y="141" width="46" height="7" rx="3" class="bar-fill bar-fill--ano" />
+      <text x="84.0" y="133" class="bar-value" text-anchor="middle">7</text>
+      <text x="84.0" y="168" class="bar-label" text-anchor="middle">2022</text>
+      <rect x="50.0" y="10" width="68" height="148" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="2023 — 0 decisãos (0.0% do total)">
+      <rect x="129.0" y="148" width="46" height="1" rx="3" class="bar-fill bar-fill--ano" />
+      <text x="152.0" y="140" class="bar-value" text-anchor="middle">0</text>
+      <text x="152.0" y="168" class="bar-label" text-anchor="middle">2023</text>
+      <rect x="118.0" y="10" width="68" height="148" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="2024 — 4 decisãos (2.1% do total)">
+      <rect x="197.0" y="144" width="46" height="4" rx="3" class="bar-fill bar-fill--ano" />
+      <text x="220.0" y="136" class="bar-value" text-anchor="middle">4</text>
+      <text x="220.0" y="168" class="bar-label" text-anchor="middle">2024</text>
+      <rect x="186.0" y="10" width="68" height="148" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="2025 — 63 decisãos (33.7% do total)">
+      <rect x="265.0" y="88" width="46" height="60" rx="3" class="bar-fill bar-fill--ano" />
+      <text x="288.0" y="80" class="bar-value" text-anchor="middle">63</text>
+      <text x="288.0" y="168" class="bar-label" text-anchor="middle">2025</text>
+      <rect x="254.0" y="10" width="68" height="148" class="bar-hit" />
+    </g>
+    <g class="bar-row" data-tip="2026 — 113 decisãos (60.4% do total)">
+      <rect x="333.0" y="40" width="46" height="108" rx="3" class="bar-fill bar-fill--ano" />
+      <text x="356.0" y="32" class="bar-value" text-anchor="middle">113</text>
+      <text x="356.0" y="168" class="bar-label" text-anchor="middle">2026</text>
+      <rect x="322.0" y="10" width="68" height="148" class="bar-hit" />
+    </g>
+</svg>
+      </div>
+
+      <div class="chart-panel">
+        <h2>Por grau de jurisdição</h2>
+        <svg viewBox="0 0 520 34" class="chart-svg chart-svg--grau" role="img" aria-label="Decisões por grau de jurisdição">
+  <g data-tip="1º grau — 98 decisões (52.4%)">
+    <rect x="0" y="0" width="271.5133689839572" height="34" rx="4" class="bar-fill bar-fill--g1" />
+  </g>
+  <g data-tip="2º grau — 57 decisões (30.5%)">
+    <rect x="273.5133689839572" y="0" width="156.50267379679144" height="34" class="bar-fill bar-fill--g2" />
+  </g>
+  <g data-tip="Grau não identificado no DataJud — 32 decisões (17.1%)">
+    <rect x="432.01604278074865" y="0" width="87.98395721925135" height="34" rx="4" class="bar-fill bar-fill--gn" />
+  </g>
+</svg>
+        <ul class="legend">
+          <li><span class="swatch swatch--g1"></span>1º grau <b>98</b></li>
+          <li><span class="swatch swatch--g2"></span>2º grau <b>57</b></li>
+          <li><span class="swatch swatch--gn"></span>não identificado <b>32</b></li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="index-section">
+    <h2>Índice das decisões</h2>
+    <p class="index-intro">As 187 decisões localizadas, uma a uma. Busque por tribunal, número do processo ou termo no trecho.</p>
+
+    <div class="toolbar">
+      <input type="text" id="busca" placeholder="Buscar processo, tribunal ou trecho&hellip;" aria-label="Buscar">
+      <select id="filtroTribunal" aria-label="Filtrar por tribunal">
+        <option value="">Todos os tribunais</option>
+        <option value="TJSP">TJSP</option><option value="TJGO">TJGO</option><option value="TJMT">TJMT</option><option value="TJRJ">TJRJ</option><option value="TJRS">TJRS</option><option value="TJPR">TJPR</option><option value="TJMG">TJMG</option><option value="TJMS">TJMS</option><option value="TJAL">TJAL</option><option value="TJCE">TJCE</option><option value="TJBA">TJBA</option><option value="TJPA">TJPA</option><option value="TJSC">TJSC</option><option value="TJTO">TJTO</option><option value="TJSE">TJSE</option><option value="TJPE">TJPE</option>
+      </select>
+      <select id="ordenar" aria-label="Ordenar">
+        <option value="data-desc">Mais recentes</option>
+        <option value="data-asc">Mais antigas</option>
+        <option value="tribunal">Tribunal</option>
+      </select>
+      <span class="count-readout" id="contagem"></span>
+    </div>
+
+    <div class="docket-list" id="docket"></div>
+  </section>
+
+  <footer class="colophon">
+    <h3>Nota metodológica</h3>
+
+    <h4>Tecnologia e fontes dos dados</h4>
+    <p>A coleta e o cruzamento dos dados foram feitos por ferramental próprio, desenvolvido pelo candidato: scripts que buscam, paginam e deduplicam as comunicações do Diário de Justiça Eletrônico Nacional (DJEN), mantido pelo Conselho Nacional de Justiça, tribunal por tribunal, sem depender de serviços de terceiros. A busca textual nacional usou os termos &ldquo;art. 69-A&rdquo; a &ldquo;art. 69-F&rdquo; da Lei 11.101/2005, &ldquo;DIP financing&rdquo;, &ldquo;debtor in possession&rdquo;, &ldquo;dinheiro novo&rdquo;, &ldquo;financiamento do devedor&rdquo;, &ldquo;financiamento da recuperanda&rdquo; e &ldquo;extraconcursal&rdquo; &mdash; este último incluído por também capturar decisões que discutem a natureza extraconcursal do crédito do financiador, tema correlato. Cada processo localizado foi em seguida enriquecido pela base pública de metadados do CNJ (DataJud), para obter classe, assunto, grau de jurisdição e data de ajuizamento.</p>
+
+    <h4>Filtro e classificação</h4>
+    <p>A busca textual bruta no DJEN retornou mais de 109 mil comunicações em todo o país &mdash; a maior parte ruído, sobretudo disputas sobre a natureza extraconcursal de créditos pré-existentes (financiamento de veículos, cédulas de crédito bancário), tema jurídico distinto do financiamento do devedor em si. Um crivo determinístico (código, sem uso de inteligência artificial nesta etapa) exigiu a coocorrência, em uma janela de 300 caracteres, de um termo de busca e de referência a recuperação judicial ou recuperanda, reduzindo o conjunto a 1.061 trechos. Cada trecho foi então lido integralmente e classificado em quatro categorias definidas a priori: <strong>CONCRETA</strong> &mdash; decisão que efetivamente deferiu, indeferiu ou revisou pedido de financiamento de uma operação específica; <strong>PLANO</strong> &mdash; cláusula de plano de recuperação que apenas prevê a possibilidade futura de financiamento, sem operação concreta submetida ao juízo; <strong>INCIDENTAL</strong> &mdash; menção processual ao financiamento sem ato decisório visível no trecho; e <strong>OUTRO</strong> &mdash; fora do escopo, tipicamente as disputas sobre natureza extraconcursal mencionadas acima. A leitura e a classificação de cada trecho foram feitas com o auxílio de um modelo de linguagem (Claude, da Anthropic), sob critério definido e supervisão do pesquisador, com amostra de auditoria disponível para verificação. Esta página reúne apenas as 187 decisões CONCRETA; as 66 PLANO e as classificadas INCIDENTAL ou OUTRO não integram o universo da pesquisa, que exige apreciação de pedido concreto.</p>
+
+    <h4>Limites e cobertura</h4>
+    <p>A cobertura do DJEN é desigual por tribunal: nenhum tribunal de justiça tem dado anterior a 2022, e o Tribunal de Justiça de São Paulo &mdash; que concentra o maior volume de recuperações judiciais de grande porte &mdash; só a partir de março de 2025. Isso deixa fora deste levantamento preliminar todo o período anterior à reforma da Lei 14.112/2020 (2017&ndash;2021), que é justamente o termo &ldquo;antes&rdquo; da comparação que a pesquisa pretende testar. A consulta de jurisprudência do e-SAJ, que poderia preencher essa lacuna em São Paulo, exige a resolução de CAPTCHA a cada busca, o que impede a automação; essa leitura, quando feita, será manual.</p>
+
+    <p class="cite">Como citar: TOLEDO, Ricardo. <em>Observatório do Financiamento DIP: levantamento preliminar.</em> Pré-projeto de pesquisa, Mestrado em Direito Comercial, PUC-SP. Outubro de 2026. Dados: DJEN/CNJ e DataJud/CNJ.</p>
+  </footer>
+
+</div>
+
+<div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+
+<script>
+const DADOS = [{"processo": "3001714-28.2026.8.19.0001", "tribunal": "TJRJ", "grau": "G1", "data": "2026-10-13", "ano": "2026", "trecho": "ompanhada de mecanismos que permitam compatibilizar a obtenção de recursos novos com a proteção dos credores e o controle da operação. Em especial, a extraconcursalidade decorrente do financiamento deve ficar limitada aos valores efetivamente disponibilizados às Recuperandas, não podendo alcançar cr"}, {"processo": "1027970-67.2026.8.11.0000", "tribunal": "TJMT", "grau": "G2", "data": "2026-10-08", "ano": "2026", "trecho": "0014639-12.2015.8.11.0003, autorizou os recuperandos Alexandre Augustin e Louize Honorato de Freitas Augustin a contratar financiamento na modalidade Debtor in Possession (DIP), no importe de R$ 120.000.000,00 (cento e vinte milhões de reais), mediante constituição de garantias reais sobre imóveis r"}, {"processo": "5006250-08.2024.8.21.0019", "tribunal": "TJRS", "grau": "G1", "data": "2026-10-08", "ano": "2026", "trecho": "ento do plano; c) autorizou a contratação da operação de refinanciamento na modalidade exit financing junto ao Banco Genial S.A., conferindo natureza extraconcursal ao crédito na forma dos artigos 67, 69-A e 69-B da Lei nº 11.101/2005; d) autorizou a outorga de garantia fiduciária sobre bens imóveis"}, {"processo": "5006250-08.2024.8.21.0019", "tribunal": "TJRS", "grau": "G1", "data": "2026-10-08", "ano": "2026", "trecho": "ento do plano; c) autorizou a contratação da operação de refinanciamento na modalidade exit financing junto ao Banco Genial S.A., conferindo natureza extraconcursal ao crédito na forma dos artigos 67, 69-A e 69-B da Lei nº 11.101/2005; d) autorizou a outorga de garantia fiduciária sobre bens imóveis"}, {"processo": "2247198-10.2026.8.26.0000", "tribunal": "TJSP", "grau": null, "data": "2026-10-08", "ano": "2026", "trecho": "íntese, que o imóvel foi alienado fiduciariamente à OXSS Securitizadora S.A., atualmente denominada IOX Securitizadora S.A., no âmbito de operação de DIP Financing autorizada pelo Juízo da recuperação judicial da sociedade Strapet Embalagens Ltda.; que a alienação fiduciária transfere ao credor fidu"}, {"processo": "5778461-14.2026.8.09.0100", "tribunal": "TJGO", "grau": "G2", "data": "2026-10-06", "ano": "2026", "trecho": "1. Agravo de instrumento contra decisão que, no âmbito de recuperação judicial, autorizou a contratação de financiamento DIP e reconheceu a natureza extraconcursal do crédito correspondente e das garantias pactuadas. II. QUESTÃO EM DISCUSSÃO. 2. Discute-se se há interesse recursal para o conhecimen"}, {"processo": "0730792-51.2026.8.02.0001", "tribunal": "TJAL", "grau": "G1", "data": "2026-10-02", "ano": "2026", "trecho": "DO FINANCIAMENTO DIP - VECTOR FIDC E DA ADEQUAÇÃO DA GARANTIA As recuperandas requerem, às fls. 459/464, autorização para formalização de operação de DIP Financing com o Vector FIDC, até o limite de R$ 4.800.000,00, mediante constituição de garantia fiduciária sobre a integralidade dos recebíveis de"}, {"processo": "5004964-95.2026.8.13.0035", "tribunal": "TJMG", "grau": "G1", "data": "2026-10-01", "ano": "2026", "trecho": "CIONADA a autorização a celebração do Contrato de Financiamento DIP – Parceiros Estratégicos (Anexo V do Plano, ID n.º 10719305746) com fundamento no art. 69-A da Lei n.º 11.101/2005, à juntada pelas Recuperandas, no prazo de 10 (dez) dias, da seguinte documentação: a) da versão definitiva e assinad"}, {"processo": "2232228-05.2026.8.26.0000", "tribunal": "TJSP", "grau": null, "data": "2026-09-22", "ano": "2026", "trecho": "e ingressos periódicos provenientes da alienação de bem imóvel (cf. fl. 22), além de informar a captação de empréstimo-ponte de R$ 1.500.000,00 e de DIP Financing de R$ 3.500.000,00 (fl. 18), bem como autorização judicial de liberação de R$ 2.413.191,00 para folha de pagamento e encargos dos meses"}, {"processo": "2105360-79.2026.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2026-09-21", "ano": "2026", "trecho": "p. Alim. e Ingr. Químicos Ltda. - Magistrado(a) Fabio Tabosa - Deram provimento ao recurso. V. U. - RECUPERAÇÃO JUDICIAL. FINANCIAMENTO NA MODALIDADE DIP FINANCING. DECISÃO QUE AUTORIZOU A CONTRATAÇÃO DE CRÉDITO NOVO, MEDIANTE CONSTITUIÇÃO DE ALIENAÇÃO FIDUCIÁRIA SOBRE IMÓVEL INTEGRANTE DO ATIVO NÃO"}, {"processo": "4051775-78.2026.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2026-09-17", "ano": "2026", "trecho": ": (a) o Banco Safra, embora tenha participado ativamente dos autos da recuperação judicial da 3C Services, jamais se opôs ao pedido de autorização do DIP Financing nem à constituição das garantias fiduciárias sobre os imóveis de matrículas nº 90.193 e nº 93.475, de modo que a manutenção das averbaçõ"}, {"processo": "2204035-14.2025.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2026-09-15", "ano": "2026", "trecho": "na, ao qual, em petição de 04/05/2026, fls. 875/876, as próprias Agravadas noticiaram a celebração de acordo entre as partes, por meio de operação de Debtor in Possession Financing, com a anuência da Administradora Judicial, do Ministério Público e autorização do D. Juízo da Recuperação Judicial, in"}, {"processo": "3011069-62.2025.8.06.0000", "tribunal": "TJCE", "grau": "G2", "data": "2026-09-02", "ano": "2026", "trecho": "AVADO: SUCOS DO BRASIL S/A EM RECUPERACAO JUDICIAL EMENTA: AGRAVO DE INSTRUMENTO. O AGRAVANTE SE RESSENTE DE QUE APRESENTOU PROPOSTA DE FINANCIAMENTO DIP FINANCING OFERECIDA PELA AGRAVANTE CREDIT PARTNERS, NO VALOR TOTAL DE R$ 7.500.000,00 (SETE MILHÕES E QUINHENTOS MIL REAIS), COM GARANTIA FIDUCIÁR"}, {"processo": "4007631-44.2025.8.26.0100", "tribunal": "TJSP", "grau": "G1", "data": "2026-09-01", "ano": "2026", "trecho": "as nº 90.193 e nº 93.475 do 2º Registro de Imóveis de Fortaleza/CE, sob a alegação de que tais bens foram dados em garantia fiduciária em operação de DIP Financing autorizada pelo Juízo da 6ª Vara Cível da Comarca de São Gonçalo/RJ, pretensão refutada pelo exequente nas manifestações do Evento 57 e"}, {"processo": "5198594-50.2024.8.09.0051", "tribunal": "TJGO", "grau": "G1", "data": "2026-08-27", "ano": "2026", "trecho": "om a atual realidade fática e interpretativa estabilizada pela instância superior. Do financiamento DIP. A contratação de financiamento na modalidade Debtor in Possession (DIP) com o Fundo Fitz Roy Special Situations II FIDC, no montante de R$ 8.000.000,00 (oito milhões de reais), foi regularmente a"}, {"processo": "1011127-17.2019.8.26.0562", "tribunal": "TJSP", "grau": "G1", "data": "2026-08-24", "ano": "2026", "trecho": "ace da r. decisão de fls. 94.126/94.136, que indeferiu integralmente o pedido de autorização judicial para contratação de financiamento na modalidade Debtor in Possession Financing (DIP Financing) junto à empresa Chimera Capital Asset Management Ltda. As Recuperandas alegam, em síntese, a existência"}, {"processo": "0010772-37.2022.8.26.0071", "tribunal": "TJSP", "grau": "G1", "data": "2026-08-21", "ano": "2026", "trecho": "dora de Bens Próprios Ltda - Fls. 688/689 e 1559/1560: Afasto a pretendida liberação dos bens aqui constritador, por se tratar de execução de credito extraconcursal. E conforme decidido pelo Juízo Recuperacional (fs 1562), Isso porque a decisão embargada não ressalva que a liberação das constrições"}, {"processo": "5154206-22.2023.8.09.0011", "tribunal": "TJGO", "grau": "G1", "data": "2026-08-19", "ano": "2026", "trecho": "zenda Pública Estadual manifestou-se contrariamente no evento 157, defendendo a manutenção do acordo. No evento 165, este Juízo deferiu a operação de DIP Financing, mas indeferiu o pedido de suspensão dos depósitos relativos ao acordo com a Fazenda Estadual, decisão mantida no evento 172 após embarg"}, {"processo": "0019913-55.2026.8.19.0000", "tribunal": "TJRJ", "grau": "G2", "data": "2026-08-12", "ano": "2026", "trecho": "a decisão proferida nos autos da recuperação judicial da Sociedade Empresária Agravada, a qual autorizou a contratação de financiamento na modalidade DIP Financing, prorrogou o stay period por 180 (cento e oitenta) dias, determinou que a Agravante se abstivesse de promover retenções a título de gara"}, {"processo": "1011127-17.2019.8.26.0562", "tribunal": "TJSP", "grau": "G1", "data": "2026-08-07", "ano": "2026", "trecho": "iminares arguidas pelas Recuperandas, e, no mérito, INDEFIRO INTEGRALMENTE O PEDIDO DE AUTORIZAÇÃO JUDICIAL PARA CONTRATAÇÃO DE FINANCIAMENTO D.I.P. (DIP FINANCING) formulado por RODRIMAR S/A TERMINAIS PORTUÁRIOS E ARMAZÉNS GERAIS e DEMAIS RECUPERANDAS às fls. 93.301/93.307 e 93.863/93.866. Como cor"}, {"processo": "0016534-09.2026.8.19.0000", "tribunal": "TJRJ", "grau": "G2", "data": "2026-08-05", "ano": "2026", "trecho": "isão proferida nos autos da recuperação judicial da Sociedade Empresária 3C Services S.A., que autorizou a contratação de financiamento na modalidade DIP Financing, prorrogou o stay period por 180 (cento e oitenta) dias, determinou que a Agravante se abstivesse de promover retenções a título de gara"}, {"processo": "0016696-04.2026.8.19.0000", "tribunal": "TJRJ", "grau": "G2", "data": "2026-08-05", "ano": "2026", "trecho": "a decisão proferida nos autos da recuperação judicial da Sociedade Empresária Agravada, a qual autorizou a contratação de financiamento na modalidade DIP Financing, prorrogou o stay period por 180 (cento e oitenta) dias, determinou que a Agravante se abstivesse de promover retenções a título de gara"}, {"processo": "2190035-72.2026.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2026-08-04", "ano": "2026", "trecho": "e Registro de Imóveis de Nova Alvorada do Sul/MS, nos exatos termos da proposta apresentada nos autos; e a contratação do financiamento na modalidade DIP Financing, com a constituição da garantia fiduciária ofertada pelas Recuperandas, nos termos da proposta apresentada, reconhecendo-se a possibilid"}, {"processo": "1402982-84.2026.8.12.0000", "tribunal": "TJMS", "grau": null, "data": "2026-08-03", "ano": "2026", "trecho": "ILIZAÇÃO ADMISSÍVEL À LUZ DO PRINCÍPIO DA PRESERVAÇÃO DA EMPRESA. PRECEDENTES DO SUPERIOR TRIBUNAL DE JUSTIÇA. OPERAÇÃO DE FINANCIAMENTO PÓS-PETIÇÃO (DIP FINANCING). REGULARIDADE E ATENDIMENTO ÀS BALIZAS DOS ARTIGOS 69-A A 69-F DA LEI DE REGÊNCIA. CRIAÇÃO DE SUBCLASSES DE CREDORES COLABORATIVOS. VAL"}, {"processo": "0700296-64.2018.8.02.0051", "tribunal": "TJAL", "grau": "G1", "data": "2026-07-31", "ano": "2026", "trecho": "7 o Sr. Administrador Judicial se manifestou favoravelmente ao pleito da recuperanda. É, em síntese, o relatório. Fundamento e decido. A alteração do art. 69-A, da Lei nº 11.101/2005, dada pela lei 14.112/2020, inclui a previsão expressa de financiamento do devedor, com autorização judicial, prevend"}, {"processo": "1401218-63.2026.8.12.0000", "tribunal": "TJMS", "grau": null, "data": "2026-07-31", "ano": "2026", "trecho": "ILIZAÇÃO ADMISSÍVEL À LUZ DO PRINCÍPIO DA PRESERVAÇÃO DA EMPRESA. PRECEDENTES DO SUPERIOR TRIBUNAL DE JUSTIÇA. OPERAÇÃO DE FINANCIAMENTO PÓS-PETIÇÃO (DIP FINANCING). REGULARIDADE E ATENDIMENTO ÀS BALIZAS DOS ARTIGOS 69-A A 69-F DA LEI DE REGÊNCIA. EXIGIBILIDADE DE CERTIDÕES NEGATIVAS TRIBUTÁRIAS. AR"}, {"processo": "5087960-21.2025.8.09.0093", "tribunal": "TJGO", "grau": "G1", "data": "2026-07-28", "ano": "2026", "trecho": "Cerrado/GO no mov. 309. No mov. 311 os recuperandos pugnam pela autorização, em caráter de urgência, para contratação de financiamento na modalidade DIP Financing junto ao FITZ ROY SPECIAL SITUATIONS II FUNDO DE INVESTIMENTO EM DIREITOS CREDITÓRIOS DE RESPONSABILIDADE LIMITADA, sendo autorizado pel"}, {"processo": "0943414-78.2024.8.19.0001", "tribunal": "TJRJ", "grau": "G1", "data": "2026-07-21", "ano": "2026", "trecho": "arena e demais direitos correlatos, nos termos das condições a serem estabelecidas nos instrumentos definitivos da operação; 3.2.RECONHEÇO a natureza extraconcursal do crédito correspondente aos valores efetivamente desembolsados no âmbito do NOVO FINANCIAMENTO DIP e objeto da presente decisão, nos"}, {"processo": "0808616-89.2026.8.02.0000", "tribunal": "TJAL", "grau": "G2", "data": "2026-07-17", "ano": "2026", "trecho": "r a interrupção do fornecimento de energia elétrica às recuperandas, mas indeferiu o pedido de homologação da operação de financiamento na modalidade DIP Financing, por entender inexistirem elementos suficientes para aferir, com a segurança jurídica necessária, a regularidade, a conveniência e os im"}, {"processo": "5154206-22.2023.8.09.0011", "tribunal": "TJGO", "grau": "G1", "data": "2026-07-17", "ano": "2026", "trecho": "iás manifestou-se contrária ao pedido da recuperanda de suspensão dos depósitos mensais, argumentando o descumprimento do acordo firmado e a natureza extraconcursal do crédito tributário. No evento 165, este Juízo autorizou a captação de recursos via DIP Financing, condicionada à oitiva do Comitê de"}, {"processo": "1044578-14.2026.8.13.0024", "tribunal": "TJMG", "grau": null, "data": "2026-07-17", "ano": "2026", "trecho": "NETO (OAB MG134987) RÉU : R & R ENGENHARIA LTDA ADVOGADO(A) : PEDRO SCAPOLATEMPORE NETO (OAB MG134987) DECISÃO 16. Ante o exposto, com fundamento no art. 69-A, c/c art. 84, inciso I-B, da Lei n. 11.101/2005, defiro o pedido das Recuperandas para AUTORIZAR a celebração, com o Banco Semear S.A., do C"}, {"processo": "1115045-55.2025.8.26.0100", "tribunal": "TJSP", "grau": "G1", "data": "2026-07-17", "ano": "2026", "trecho": "8.169 autorizou a contratação de financiamento DIP, a constituição das garantias necessárias ao ingresso de caixa novo e o reconhecimento da natureza extraconcursal dos valores efetivamente disponibilizados às Recuperandas. A autorização não compreendeu, de forma automática, a aprovação de toda a ar"}, {"processo": "0730792-51.2026.8.02.0001", "tribunal": "TJAL", "grau": "G1", "data": "2026-07-14", "ano": "2026", "trecho": "enha de interromper o fornecimento de energia elétrica às Recuperandas, e, quanto ao pedido de homologação da operação de financiamento na modalidade DIP Financing, INDEFIRO o pleito, diante da insuficiência de elementos que permitam aferir, com a segurança jurídica necessária, a regularidade, a con"}, {"processo": "3017777-65.2025.8.19.0001", "tribunal": "TJRJ", "grau": "G1", "data": "2026-07-14", "ano": "2026", "trecho": "da recuperanda de que os recebíveis provenientes do processo atualmente ultrapassem os 50 milhões de reais, suficientes para fazer frente ao crédito extraconcursal da agravante e, ainda, para a garantia do financiamento DIP submetido à autorização judicial. Daí o motivo pelo qual a decisão agravada"}, {"processo": "3015651-11.2026.8.19.0000", "tribunal": "TJRJ", "grau": null, "data": "2026-07-10", "ano": "2026", "trecho": "upação demonstrada pelo Ministério Público, de que as garantias oferecidas desfalquem sobremaneira a patrimônio ativo da devedora, criando um passivo extraconcursal, embora relevante, não deixa alternativas para a viabilização da empresa, que assistiria de forma passiva a aproximação do estado falim"}, {"processo": "1027970-67.2026.8.11.0000", "tribunal": "TJMT", "grau": "G2", "data": "2026-07-08", "ano": "2026", "trecho": "suspendendo os efeitos da decisão proferida pelo Juízo da 4ª Vara Cível da Comarca de Rondonópolis, que autorizou a contratação de novo financiamento extraconcursal (DIP Financing), bem como a constituição das respectivas garantias reais. Sustentam os agravantes, em síntese, que a decisão agravada t"}, {"processo": "1007410-69.2022.8.26.0019", "tribunal": "TJSP", "grau": "G1", "data": "2026-07-07", "ano": "2026", "trecho": "adronizados - - Julia Crespan de Lima e outros - VISTOS. 1) Conquanto a Superior Instância tenha confirmado a decisão que autorizara a contratação do Dip Financing pela recuperanda, consigne-se que o passar do tempo e, notadamente, a decisão que concedeu efeito suspensivo ao agravo de instrumento, f"}, {"processo": "2151813-35.2026.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2026-07-01", "ano": "2026", "trecho": "devedor de tal operação; 2.2) A agravante pretende a atribuição de efeito suspensivo de modo a obstar a destinação dos valores depositados ao crédito extraconcursal decorrente do DIP Financing e ao passivo fiscal, sustentando ter crédito de natureza alimentar equiparado aos da Classe I, e alegando v"}, {"processo": "4027947-44.2026.8.26.0100", "tribunal": "TJSP", "grau": "G1", "data": "2026-07-01", "ano": "2026", "trecho": "deve ser discutida no juízo competente; (viii) ratificou a decisão que autorizou busca e apreensão requerida pelo Banco Pine, reconhecendo a natureza extraconcursal do crédito e a possibilidade de constrição dos bens dados em garantia; (ix) determinou a intimação dos credores para manifestação sobre"}, {"processo": "1027970-67.2026.8.11.0000", "tribunal": "TJMT", "grau": "G2", "data": "2026-06-30", "ano": "2026", "trecho": "0014639-12.2015.8.11.0003, autorizou os recuperandos Alexandre Augustin e Louize Honorato de Freitas Augustin a contratar financiamento na modalidade Debtor in Possession (DIP), no importe de R$ 120.000.000,00 (cento e vinte milhões de reais), mediante constituição de garantias reais sobre imóveis r"}, {"processo": "1007410-69.2022.8.26.0019", "tribunal": "TJSP", "grau": "G1", "data": "2026-06-23", "ano": "2026", "trecho": "erando a repercussão da aludida decisão, que reconsiderando pronunciamento judicial anterior, ratificou a autorização do Juízo para a contratação do \"dip financing\", manifestem-se a recuperanda, a Administradora Judicial e o representante do Ministério Público a respeito. 2) Ciente do desfecho do v"}, {"processo": "8028812-90.2026.8.05.0000", "tribunal": "TJBA", "grau": null, "data": "2026-06-22", "ano": "2026", "trecho": ". O cerne recursal consiste na aferição do acerto da decisão agravada que indeferiu, em caráter inicial, a contratação de financiamento na modalidade DIP Financing, exigindo-se, para tanto, o exame da presença dos requisitos legais previstos no art. 69-A da Lei nº 11.101/2005 e dos pressupostos da t"}, {"processo": "1002246-38.2017.8.26.0201", "tribunal": "TJSP", "grau": "G1", "data": "2026-06-22", "ano": "2026", "trecho": "Epp e outros - Fls. 25258/25262: Ciente do v. Acórdão proferido no agravo de instrumento interposto pela recuperanda contra a decisão que indeferiu o Dip Financing (Negaram provimento). - ADV: PAULO MARCOS DE CAMPOS BATISTA (OAB 522190/SP), ANDRÉIA DOS SANTOS SILVA FERREIRA (OAB 347807/SP), ANDRÉIA"}, {"processo": "3017777-65.2025.8.19.0001", "tribunal": "TJRJ", "grau": "G1", "data": "2026-06-18", "ano": "2026", "trecho": "upação demonstrada pelo Ministério Público, de que as garantias oferecidas desfalquem sobremaneira a patrimônio ativo da devedora, criando um passivo extraconcursal, embora relevante, não deixa alternativas para a viabilização da empresa, que assistiria de forma passiva a aproximação do estado falim"}, {"processo": "1002246-38.2017.8.26.0201", "tribunal": "TJSP", "grau": "G1", "data": "2026-06-17", "ano": "2026", "trecho": "abril de 2023 (fls. 19290/19295), a recuperanda apresentou pedido de autorização judicial para celebração de contrato de financiamento na modalidade DIP Financing (Debtor-in-Possession Financing), prevista no artigo 69-A da Lei 11.101/2005, tendo o juízo concedido a autorização (fl. 19.428). Esta p"}, {"processo": "2021919-06.2026.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2026-06-17", "ano": "2026", "trecho": "(a) Fabio Tabosa - Negaram provimento ao recurso. V. U. - RECUPERAÇÃO JUDICIAL. PEDIDO DE AUTORIZAÇÃO PARA CONTRATAÇÃO DE FINANCIAMENTO NA MODALIDADE DIP FINANCING, MEDIANTE CONSTITUIÇÃO DE GARANTIA FIDUCIÁRIA SOBRE IMÓVEL INTEGRANTE DO ATIVO NÃO CIRCULANTE DA RECUPERANDA. INDEFERIMENTO. HISTÓRICO I"}, {"processo": "0800009-11.2026.8.14.9100", "tribunal": "TJPA", "grau": "G1", "data": "2026-06-16", "ano": "2026", "trecho": "eriormente autorizada nos autos. Sustentam as requerentes que, após a prolação da sentença que autorizou a celebração do financiamento pós-concursal (DIP Financing) no valor de R$ 10.000.000,00 (dez milhões de reais), sobreveio fato novo consistente na antecipação, pela União Federal, do pagamento d"}, {"processo": "0035701-12.2026.8.19.0000", "tribunal": "TJRJ", "grau": null, "data": "2026-06-15", "ano": "2026", "trecho": "os. A administração Judicial, conforme manifestação de fls. 14959/14960, não se opôs à revalidação da autorização do financiamento DIP, nos termos do art. 69-A da Lei nº 11.101/2005; Não houve manifestação do Ministério Público acerca do tema. DECIDO. Conforme decisão proferida às fls. 10.968/10973,"}, {"processo": "2112728-42.2026.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2026-06-10", "ano": "2026", "trecho": "tra a r. decisão agravada de fls. 4.642/4.652 (item 16), que deferiu a autorização para celebração do contrato de financiamento DIP com fundamento no art. 69-A da Lei n.º 11.101/2005, porém determinou, com esteio no art. 69-C, caput e § 1.º, do mesmo diploma, que a garantia a ser constituída em favo"}, {"processo": "5154206-22.2023.8.09.0011", "tribunal": "TJGO", "grau": "G1", "data": "2026-06-09", "ano": "2026", "trecho": ", condicionada ao pagamento dos aluguéis correntes. O Estado de Goiás manifestou-se no mov. 157. No mov. 165, autorizou-se a captação de recursos via DIP Financing junto à Profarma e Banco Daycoval, com abertura de conta específica, decisão mantida no mov. 172 após rejeição de aclaratórios. A marcha"}, {"processo": "5198594-50.2024.8.09.0051", "tribunal": "TJGO", "grau": "G1", "data": "2026-06-09", "ano": "2026", "trecho": "tando o controle judicial à legalidade, sem adentrar na viabilidade econômica. A decisão também autorizou a celebração de financiamento na modalidade Debtor in Possession (DIP). Inconformado, o agravante alega, em síntese, a ilegalidade de diversas cláusulas constantes do Plano de Recuperação Judici"}, {"processo": "5198594-50.2024.8.09.0051", "tribunal": "TJGO", "grau": "G1", "data": "2026-06-09", "ano": "2026", "trecho": "e Itaú Unibanco S.A (mov. 522), mas os rejeitou e, deferiu o pedido formulado pelas devedoras e autorizou a celebração do financiamento na modalidade Debtor in Possession Financing (DIP). A União Federal (Fazenda Nacional) opôs Embargos de Declaração com pedido de efeitos infringentes em face da dec"}, {"processo": "0037492-27.2012.8.09.0051", "tribunal": "TJGO", "grau": "G1", "data": "2026-06-08", "ano": "2026", "trecho": "alienação dos bens tidos como prescindíveis para a manutenção das atividades empresariais da recuperanda.\" Por fim, houve o deferimento do pedido de dip financing. No evento 1140, foi publicado novo edital. JM TERRRAPLANAGEM E CONSTRUÇÕES LTDA, no evento 1143, procedeu com a regularização de sua re"}, {"processo": "5486112-26.2026.8.09.0051", "tribunal": "TJGO", "grau": "G2", "data": "2026-06-08", "ano": "2026", "trecho": "tando o controle judicial à legalidade, sem adentrar na viabilidade econômica. A decisão também autorizou a celebração de financiamento na modalidade Debtor in Possession (DIP). Inconformado, o agravante alega, em síntese, a ilegalidade de diversas cláusulas constantes do Plano de Recuperação Judici"}, {"processo": "1045664-83.2025.8.11.0000", "tribunal": "TJMT", "grau": "G2", "data": "2026-06-08", "ano": "2026", "trecho": "ECEU DO RECURSO. E M E N T A Ementa. Direito empresarial e processual civil. Agravo de instrumento. Recuperação judicial. Financiamento na modalidade dip financing. Preclusão pro judicato. Identidade de matéria já apreciada em agravo anterior transitado em julgado. Impossibilidade de rediscussão. Ar"}, {"processo": "1000139-66.2025.8.26.0354", "tribunal": "TJSP", "grau": "G1", "data": "2026-06-08", "ano": "2026", "trecho": "onjunto 909/2025. Homologo a cessão de crédito de Patagônia Capital., nos termos já implementados pela Administradora Judicial. No que diz respeito à DIP Financing, a documentação apresentada mostra-se regular, ressalvada a ausência de comprovação quanto à Usina Itajobi. Intime-se a interessada para"}, {"processo": "0811011-21.2026.8.14.0000", "tribunal": "TJPA", "grau": "G2", "data": "2026-06-02", "ano": "2026", "trecho": "se sentido, vejamos: Recuperação judicial. Decisão que concedeu à recuperanda, ora agravada, autorização para formalização de operação na modalidade 'DIP Financing', ocasião em que ofertou em garantia a mínima parte de um dos seus ativos. Irresignação do agravante. Inadmissibilidade. Requisitos lega"}, {"processo": "5933479-15.2025.8.09.0051", "tribunal": "TJGO", "grau": null, "data": "2026-05-29", "ano": "2026", "trecho": "decisão interlocutória que, em sede de recuperação judicial, reconheceu a essencialidade de bens imóveis dados em alienação fiduciária em garantia ao DIP Financing para manter empresa recuperanda na posse dos mesmos, sem prejuízo da validade e subsistência da aludida garantia em favor do credor, bem"}, {"processo": "2333172-49.2025.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2026-05-26", "ano": "2026", "trecho": "edor. Inadmissibilidade. Financiamento que serviria para excluir os créditos com garantia hipotecária dos efeitos da recuperação judicial. Exegese do art. 69-A da Lei n.º 11.101/05, incluído pela Lei n.º 14.112/20. Criação de subclasses. 'Credores parceiros'. Regularidade. Inteligência do art. 67, p"}, {"processo": "4043281-21.2026.8.26.0100", "tribunal": "TJSP", "grau": "G1", "data": "2026-05-26", "ano": "2026", "trecho": "cia e boa-fé processual, abre oportunidade para que outros credores ou acionistas interessados participem do esforço de fomento por meio do aporte de dinheiro novo (acima de R$ 1.000.000,00) em condições similares ou da aquisição pro rata de fatias da operação já celebrada junto ao financiador origi"}, {"processo": "1000119-75.2025.8.26.0354", "tribunal": "TJSP", "grau": "G1", "data": "2026-05-25", "ano": "2026", "trecho": "ncia à AJ. Fls. 2171: Ciente. Fls. 2173/2177: Ciente do Agravo de Instrumento que concedeu efeito suspensivo ao recurso, para impedir a realização do DIP Financing até ulterior deliberação. Ciência às partes. Manifeste-se a AJ. Fls. 2178/2190: Ciente de que a AGC realizada no dia 19/05/2026 foi susp"}, {"processo": "1013665-95.2019.8.26.0068", "tribunal": "TJSP", "grau": "G1", "data": "2026-05-25", "ano": "2026", "trecho": "no acordo firmado entre as partes, foi efetivamente estabelecida a obrigação de concessão de crédito por parte da financiadora, a integrar o saldo do dip financing. Tal crédito foi concedido nos termos ajustados, conforme comprova o extrato colacionado junto aos embargos, de forma que os embargos de"}, {"processo": "5433504-51.2026.8.09.0051", "tribunal": "TJGO", "grau": "G2", "data": "2026-05-22", "ano": "2026", "trecho": "tando o controle judicial à legalidade, sem adentrar na viabilidade econômica. A decisão também autorizou a celebração de financiamento na modalidade Debtor in Possession (DIP). Inconformada, a parte agravante alega, em síntese, a ilegalidade de diversas cláusulas do Plano de Recuperação Judicial. A"}, {"processo": "5198594-50.2024.8.09.0051", "tribunal": "TJGO", "grau": "G1", "data": "2026-05-22", "ano": "2026", "trecho": "tando o controle judicial à legalidade, sem adentrar na viabilidade econômica. A decisão também autorizou a celebração de financiamento na modalidade Debtor in Possession (DIP). Inconformada, a parte agravante alega, em síntese, a ilegalidade de diversas cláusulas do Plano de Recuperação Judicial. A"}, {"processo": "1002369-59.2026.8.11.0000", "tribunal": "TJMT", "grau": "G2", "data": "2026-05-21", "ano": "2026", "trecho": "ROS X S.A. contra decisão do Juízo da 4ª Vara Cível da Comarca de Rondonópolis, que autorizou a celebração de contrato de financiamento na modalidade DIP financing, no valor de R$ 40.000.000,00 (quarenta milhões de reais), pleiteada pelas recuperandas, MONTE ALEGRE FAZENDAS LTDA., MONTE ALEGRE AGRÍC"}, {"processo": "1402931-73.2026.8.12.0000", "tribunal": "TJMS", "grau": "G2", "data": "2026-05-20", "ano": "2026", "trecho": "DE SOERGUIMENTO DA EMPRESA - FINANCIAMENTO RELEVANTE - CESSÃO DE DIREITOS CREDITÓRIOS - AUTORIZAÇÃO JUDICIAL - IRREVERSIBILIDADE FÁTICA DO NEGÓCIO - ART. 69-B DA LRF - AUSÊNCIA DE DEMONSTRAÇÃO DE PREJUÍZO - DECISÃO MANTIDA - RECURSO DESPROVIDO. 1. A decisão que convola a recuperação judicial em fal"}, {"processo": "2367185-74.2025.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2026-05-15", "ano": "2026", "trecho": "DETERMINOU A LIBERAÇÃO DE CONSTRIÇÃO JUDICIAL INCIDENTE SOBRE UNIDADE IMOBILIÁRIA PARA FINS DE CONSTITUIÇÃO DE GARANTIA EM OPERAÇÃO DE FINANCIAMENTO DEBTOR IN POSSESSION (DIP). INSURGÊNCIA DO EXEQUENTE. ADMISSIBILIDADE. CRÉDITO DECORRENTE DE EMPREENDIMENTO SUBMETIDO AO REGIME DE PATRIMÔNIO DE AFETA"}, {"processo": "0102339-45.2025.8.16.0000", "tribunal": "TJPR", "grau": "G2", "data": "2026-05-13", "ano": "2026", "trecho": "DE INSTRUMENTO. RECUPERAÇÃO JUDICIAL. PRETENSÃO DA RECUPERANDA DE CELEBRAR CONTRATO DE FORNECIMENTO DE INSUMOS COM GARANTIA DE ALIENAÇÃO FIDUCIÁRIA. DIP FINANCING. DECISÃO agravada QUE AUTORIZOU A CELEBRAÇÃO DO CONTRATO. recurso de credora da recuperanda objetivando afastar a autorização para celeb"}, {"processo": "2109458-10.2026.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2026-05-12", "ano": "2026", "trecho": "posto em face de decisão de ps. 56/64, que convolou a recuperação judicial em falência, indeferindo pedido de homologação de 3º aditivo contratual de DIP Financing. Os agravantes, credores financiadores pactuantes do DIP Financing, requerem a concessão de tutela antecipada recursal, para homologação"}, {"processo": "1000222-10.2024.8.26.0260", "tribunal": "TJSP", "grau": "G1", "data": "2026-05-07", "ano": "2026", "trecho": "isponibilidades, circunstância que compromete a efetividade da excussão do patrimônio para a satisfação do crédito, notadamente porque, nos termos do art. 69-C da Lei nº 11.101/2005, a constituição de garantia subordinada não afasta nem mitiga os direitos do credor originário, limitando eventual sat"}, {"processo": "5933479-15.2025.8.09.0051", "tribunal": "TJGO", "grau": null, "data": "2026-05-05", "ano": "2026", "trecho": "decisão interlocutória que, em sede de recuperação judicial, reconheceu a essencialidade de bens imóveis dados em alienação fiduciária em garantia ao DIP Financing para manter empresa recuperanda na posse dos mesmos, sem prejuízo da validade e subsistência da aludida garantia em favor do credor, bem"}, {"processo": "1011030-89.2022.8.26.0019", "tribunal": "TJSP", "grau": "G1", "data": "2026-04-22", "ano": "2026", "trecho": "o de crédito, os quais somente poderão prosseguir em caso de retomada do processo de recuperação; (iii) o regramento específico acerca do contrato de dip financing, de modo a manter eficazes e exigíveis apenas as obrigações decorrentes dos valores já tomados, ficando suspensa a disponibilização de n"}, {"processo": "0000717-45.2019.8.19.0065", "tribunal": "TJRJ", "grau": "G1", "data": "2026-04-15", "ano": "2026", "trecho": "os. A administração Judicial, conforme manifestação de fls. 14959/14960, não se opôs à revalidação da autorização do financiamento DIP, nos termos do art. 69-A da Lei nº 11.101/2005; Não houve manifestação do Ministério Público acerca do tema. DECIDO. Conforme decisão proferida às fls. 10.968/10973,"}, {"processo": "1138597-54.2022.8.26.0100", "tribunal": "TJSP", "grau": "G1", "data": "2026-04-15", "ano": "2026", "trecho": "3.425.378/0001-89. Diante da convolação em falência, indefiro o pedido de homologação do 3º Aditivo ao Instrumento de Promessa de Mútuo na Modalidade DIP Financing. Por conseguinte, promovo as seguintes deliberações e determinações: 1. Mantenho, como Administrador(a) Judicial, Laspro Consultores Ltd"}, {"processo": "5110539-94.2022.8.09.0051", "tribunal": "TJGO", "grau": "G1", "data": "2026-04-14", "ano": "2026", "trecho": "decisão interlocutória que, em sede de recuperação judicial, reconheceu a essencialidade de bens imóveis dados em alienação fiduciária em garantia ao DIP Financing para manter empresa recuperanda na posse dos mesmos, sem prejuízo da validade e subsistência da aludida garantia em favor do credor(emba"}, {"processo": "5933479-15.2025.8.09.0051", "tribunal": "TJGO", "grau": null, "data": "2026-04-13", "ano": "2026", "trecho": "decisão interlocutória que, em sede de recuperação judicial, reconheceu a essencialidade de bens imóveis dados em alienação fiduciária em garantia ao DIP Financing para manter empresa recuperanda na posse dos mesmos, sem prejuízo da validade e subsistência da aludida garantia em favor do credor(emba"}, {"processo": "5033694-50.2024.8.09.0051", "tribunal": "TJGO", "grau": "G1", "data": "2026-04-07", "ano": "2026", "trecho": "na qual, dentre outras medidas, restou (i) indeferido o pedido de tutela de urgência consistente em autorização de contratação de financiamento DIP (Debtor in Possession) mediante constituição de alienação fiduciária sobre o imóvel, junto ao Banco Sofisa S.A.; (ii) determinado, quanto ao pedido de"}, {"processo": "5008297-94.2021.8.24.0012", "tribunal": "TJSC", "grau": "G1", "data": "2026-04-07", "ano": "2026", "trecho": "edor. Inadmissibilidade. Financiamento que serviria para excluir os créditos com garantia hipotecária dos efeitos da recuperação judicial. Exegese do art. 69-A da Lei n.º 11.101/05, incluído pela Lei n.º 14.112/20. Criação de subclasses. \"Credores parceiros\". Regularidade. Inteligência do art. 67, p"}, {"processo": "5008297-94.2021.8.24.0012", "tribunal": "TJSC", "grau": "G1", "data": "2026-04-06", "ano": "2026", "trecho": "edor. Inadmissibilidade. Financiamento que serviria para excluir os créditos com garantia hipotecária dos efeitos da recuperação judicial. Exegese do art. 69-A da Lei n.º 11.101/05, incluído pela Lei n.º 14.112/20. Criação de subclasses. \"Credores parceiros\". Regularidade. Inteligência do art. 67, p"}, {"processo": "2241590-65.2025.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2026-04-01", "ano": "2026", "trecho": "EDOR. INADMISSIBILIDADE. FINANCIAMENTO QUE SERVIRIA PARA EXCLUIR OS CRÉDITOS COM GARANTIA HIPOTECÁRIA DOS EFEITOS DA RECUPERAÇÃO JUDICIAL. EXEGESE DO ART. 69-A DA LEI N.º 11.101/05, INCLUÍDO PELA LEI N.º 14.112/20. CRIAÇÃO DE SUBCLASSES. “CREDORES PARCEIROS”. REGULARIDADE. INTELIGÊNCIA DO ART. 67, P"}, {"processo": "2241781-13.2025.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2026-04-01", "ano": "2026", "trecho": "EDOR. INADMISSIBILIDADE. FINANCIAMENTO QUE SERVIRIA PARA EXCLUIR OS CRÉDITOS COM GARANTIA HIPOTECÁRIA DOS EFEITOS DA RECUPERAÇÃO JUDICIAL. EXEGESE DO ART. 69-A DA LEI N.º 11.101/05, INCLUÍDO PELA LEI N.º 14.112/20. CRIAÇÃO DE SUBCLASSES. “CREDORES PARCEIROS”. REGULARIDADE. INTELIGÊNCIA DO ART. 67, P"}, {"processo": "1000119-75.2025.8.26.0354", "tribunal": "TJSP", "grau": "G1", "data": "2026-04-01", "ano": "2026", "trecho": "ão opostos por Banco do Brasil S.A. ACOLHO os presentes embargos, posto que tempestivos. Em síntese, alega a embargante que a decisão que autorizou o DIP Financing foi omissa e obscura, pois o imóvel dado em garantia já é hipotecado ao Banco do Brasil, sem sua prévia intimação. A AJ se manifestou so"}, {"processo": "5324872-25.2024.8.09.0010", "tribunal": "TJGO", "grau": "G1", "data": "2026-03-31", "ano": "2026", "trecho": "os recuperandos em face da decisão de movimentação n.º 831; indeferiu o pedido de prorrogação do stay period da YSJ Participações Ltda. e o pedido de DIP Financing; determinou a intimação da Corteva Agriciência Ltda. acerca da sub-rogação da AIG Seguros Brasil S/A; expediu ofício à COMIGO para venda"}, {"processo": "0008807-53.2019.8.11.0004", "tribunal": "TJMT", "grau": null, "data": "2026-03-23", "ano": "2026", "trecho": "o judicial, com a consequente convocação de nova assembleia geral de credores, bem como a autorização para contratação de financiamento na modalidade DIP financing, sob o argumento de superveniência de dificuldades econômico-financeiras. O Juízo, em decisões posteriores, determinou a oitiva dos cred"}, {"processo": "2062882-56.2026.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2026-03-19", "ano": "2026", "trecho": "tras deliberações, determinou à recuperanda que cumpra o acordo celebrado com o referido credor, em 24 horas, mediante o pagamento integral do débito extraconcursal, sob pena de reserva do valor inadimplido nos recursos auferidos pelo DIP Financing, oficiando-se à SOMA/UNIQUE e a ANTARES para que re"}, {"processo": "2099291-65.2025.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2026-03-18", "ano": "2026", "trecho": "OR PARTICIPAR DO FINANCIAMENTO DIP, ELIMINANDO O TRATAMENTO DESIGUAL INJUSTIFICADO.NÃO HÁ VEDAÇÃO LEGAL PARA QUE UM CREDOR ATUE COMO FINANCIADOR DIP (ART. 69-E DA LEI 11.101/2005). AS REMUNERAÇÕES PERCEBIDAS PELO BTG PACTUAL (TAXAS DE ESTRUTURAÇÃO E COMPROMISSO) DECORREM DOS RISCOS DECORRENTES DO AP"}, {"processo": "1007410-69.2022.8.26.0019", "tribunal": "TJSP", "grau": "G1", "data": "2026-03-18", "ano": "2026", "trecho": "tando que em caso de recusa ou silêncio, consoante anteriormente ajustado entre ambos, será implementada a reserva do valor correspondente ao crédito extraconcursal em aberto nos recursos do DIP Financing, sob pena de retomada do pedido de decretação de falência. 7) Em que pese o quanto argumentado"}, {"processo": "5005025-07.2025.8.21.0022", "tribunal": "TJRS", "grau": "G1", "data": "2026-03-17", "ano": "2026", "trecho": "1. Do pedido de autorização para celebração do Financiamento DIP. A recuperanda requereu autorização para a celebração de financiamento na modalidade DIP Financing junto à Invista Crédito e Investimento S/A, inicialmente no evento 582 e, posteriormente, com nova proposta no Evento 681. A Administrad"}, {"processo": "1000139-66.2025.8.26.0354", "tribunal": "TJSP", "grau": "G1", "data": "2026-03-17", "ano": "2026", "trecho": "da extensão das garantias sub-rogadas e da regularidade documental. Fls 15334/15338,15632/15633, 15660/15661 e 15663/15664. Em relação aos valores do DIP Financing, diante da comprovação de que os depósitos foram realizados nos exatos termos da autorização judicial que deferiu o DIP Financing, autor"}, {"processo": "5933479-15.2025.8.09.0051", "tribunal": "TJGO", "grau": null, "data": "2026-03-09", "ano": "2026", "trecho": "terlocutória atacada (evento nº1.760 dos autos originários) reconheceu a essencialidade dos bens imóveis dados em alienação fiduciária em garantia ao DIP Financing para manter as recuperandas agravadas na posse dos mesmos, sem prejuízo da validade e subsistência da aludida garantia em favor do credo"}, {"processo": "5158274-41.2025.8.21.0001", "tribunal": "TJRS", "grau": "G1", "data": "2026-03-09", "ano": "2026", "trecho": "dora S/A (ev. 217) em face da decisão interlocutória do evento 199, que indeferiu, por ora, o pedido de autorização para contratação de financiamento extraconcursal ( DIP Financing ) e determinou a submissão da matéria à Assembleia Geral de Credores. Arguiu a embargante, em síntese, a existência de"}, {"processo": "5158274-41.2025.8.21.0001", "tribunal": "TJRS", "grau": "G1", "data": "2026-03-09", "ano": "2026", "trecho": "dora S/A (ev. 217) em face da decisão interlocutória do evento 199, que indeferiu, por ora, o pedido de autorização para contratação de financiamento extraconcursal ( DIP Financing ) e determinou a submissão da matéria à Assembleia Geral de Credores. Arguiu a embargante, em síntese, a existência de"}, {"processo": "5023837-81.2026.8.21.7000", "tribunal": "TJRS", "grau": "G2", "data": "2026-03-05", "ano": "2026", "trecho": "RF, bem como a necessidade de homologação de modificações de créditos trabalhistas. Em 14 de novembro de 2024, o Juízo autorizou o Financiamento DIP (Art. 69-A LRF), e, após o decurso do prazo editalício (Evento 494) sem manifestação dos credores (Art. 66, § 1º, I, da LRF), a AJ postulou a expedição"}, {"processo": "1007410-69.2022.8.26.0019", "tribunal": "TJSP", "grau": "G1", "data": "2026-03-04", "ano": "2026", "trecho": "tda - - Gabriele Jorge - - Andre Sacilotto Idalgo - - CPFL ENERGIA S.A. - - Maurício Lima Costa - - Claro S/A e outros - VISTOS. 1) Constata-se que o DIP FINANCING pleiteado pela recuperanda já foi autorizado pela decisão proferida a pgs. 28749/28752, a qual inclusive foi submetida à apreciação da S"}, {"processo": "2200037-38.2025.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2026-03-03", "ano": "2026", "trecho": "contra r. decisão que, nos autos da recuperação judicial de ARTEC PISOS E REVESTIMENTOS LTDA, autorizou a contratação de financiamento na modalidade Debtor in Possession (\"DIP\") (fls. 5930/5931 dos autos de origem). Inconformado, o agravante sustenta, em síntese, que a agravada se encontra inativa"}, {"processo": "2321933-48.2025.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2026-03-03", "ano": "2026", "trecho": "AN ROSA TAVARES contra r. decisão que, nos autos da recuperação judicial de ARTEC PISOS E REVESTIMENTOS LTDA, homologou o financiamento na modalidade Debtor in Possession (\"DIP\") (fls. 6.241/6.251 dos autos de origem). Inconformado, o agravante sustenta, em síntese, que que a agravada descumpre reit"}, {"processo": "5055148-90.2026.8.21.7000", "tribunal": "TJRS", "grau": "G2", "data": "2026-03-02", "ano": "2026", "trecho": "ssion (DIP) autorizado judicialmente para o custeio dos insumos da safra 2025/2026. O exame considerou o contexto econômico financeiro da operação, a extraconcursaliade do crédito e sua vinculação funcional à continuidade da atividade produtiva e ao cumprimento do Plano de Recuperação Judicial. No p"}, {"processo": "0037492-27.2012.8.09.0051", "tribunal": "TJGO", "grau": "G1", "data": "2026-02-25", "ano": "2026", "trecho": "s do artigo 55, da Lei nº 11.101/2005. No curso da recuperação judicial, este Juízo autorizou a celebração de contrato de financiamento na modalidade DIP FINANCING, no valor de R$ 12.000.000,00 (doze milhões de reais), com fundamento na Seção IV-A da Lei nº 11.101/2005, introduzida pela Lei nº 14.11"}, {"processo": "5034171-49.2024.8.13.0702", "tribunal": "TJMG", "grau": "G1", "data": "2026-02-25", "ano": "2026", "trecho": "633566. Requer o acolhimento dos embargos para sanar a omissão apontada. Em Id Num. 10568496161 foi deferido o pedido de autorização de financiamento Debtor in Possession (DIP Financing), formulado pelo GRUPO ECONÔMICO AGROPECUÁRIA MOREIRA VASCONCELOS (GRUPO ECONÔMICO AMV), bem como foi determinada"}, {"processo": "2021919-06.2026.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2026-02-25", "ano": "2026", "trecho": "la recursal requerida, cuja inconveniência se mostra manifesta. A r. decisão agravada, que negou autorização para a contratação, pela recuperanda, de DIP Financing, mediante entrega em garantia de imóvel integrante de seu ativo, está longe de desbordar da razoabilidade, mostrando-se solidamente fund"}, {"processo": "0016246-89.2024.8.27.2722", "tribunal": "TJTO", "grau": "G1", "data": "2026-02-25", "ano": "2026", "trecho": "ELEBRAÇÃO DE FINANCIAMENTO DIP No evento n. 2.406 os Recuperandos postulam autorização judicial para a celebração de financiamento DIP, nos termos do art. 69-A da LRF. Alegam, em síntese, severa restrição de liquidez e sustentam que a operação visa assegurar a continuidade das atividades produtivas"}, {"processo": "5300131-14.2025.8.09.0000", "tribunal": "TJGO", "grau": null, "data": "2026-02-20", "ano": "2026", "trecho": "ta abaixo transcrita: “DIREITO EMPRESARIAL E PROCESSUAL CIVIL. AGRAVO DE INSTRUMENTO. RECUPERAÇÃO JUDICIAL. CONTRATAÇÃO DE FINANCIAMENTO EMERGENCIAL (DIP FINANCING). IMÓVEL RURAL OFERECIDO COMO GARANTIA DE ALIENAÇÃO FIDUCIÁRIA. IMPUGNAÇÃO POR CREDORES E TERCEIROS. COMPETÊNCIA DO JUÍZO DA RECUPERAÇÃO"}, {"processo": "1007410-69.2022.8.26.0019", "tribunal": "TJSP", "grau": "G1", "data": "2026-02-18", "ano": "2026", "trecho": "ssões, mas sim em argumentos para a reforma da decisão, o que reforça o descabimento dos embargos para os fins pela recuperanda colimados. Ademais, o DIP Financing visa justamente alavancar as atividades da empresa, sendo que o valor a ingressar nos cofres da recuperanda deve ser utilizado para tal"}, {"processo": "5037969-46.2026.8.21.7000", "tribunal": "TJRS", "grau": "G2", "data": "2026-02-13", "ano": "2026", "trecho": "RF, bem como a necessidade de homologação de modificações de créditos trabalhistas. Em 14 de novembro de 2024, o Juízo autorizou o Financiamento DIP (Art. 69-A LRF), e, após o decurso do prazo editalício (Evento 494) sem manifestação dos credores (Art. 66, § 1º, I, da LRF), a AJ postulou a expedição"}, {"processo": "1000579-51.2018.8.26.0146", "tribunal": "TJSP", "grau": "G1", "data": "2026-02-13", "ano": "2026", "trecho": "ncerrou o stay period (fls. 2507/2508). Em decisão de fls. 6241/6251, este Juízo homologou os instrumentos contratuais do financiamento na modalidade Debtor in Possession (DIP Financing), previsto no art. 69-A da Lei nº 11.101/05, com redação dada pela Lei nº 14.112/2020. Na mesma decisão (fls. 6241"}, {"processo": "1000865-65.2024.8.26.0260", "tribunal": "TJSP", "grau": "G1", "data": "2026-02-11", "ano": "2026", "trecho": ". A fim de viabilizar a operação de desmobilização, este Juízo acolheu pedido das Recuperandas para captação de recursos por meio da implementação de DIP Financing. Todavia, conforme mencionam as Recuperandas, a liberação dos recursos somente ocorreu em data próxima do fim do prazo definido na instâ"}, {"processo": "1000139-66.2025.8.26.0354", "tribunal": "TJSP", "grau": "G1", "data": "2026-02-11", "ano": "2026", "trecho": "Administradora Judicial às fl. 14668 e fl. 14658/14665, respectivamente, e a oferta de garantia de imóvel do ativo não-circulante, DEFIRO o pedido de DIP Financing junto à Viralcool, no montante total de R$ 150.000.000,00, com fundamento nos artigos 69-A e seguintes da Lei 11.4101/05, ficando autori"}, {"processo": "5000730-03.2021.8.13.0696", "tribunal": "TJMG", "grau": "G1", "data": "2026-02-09", "ano": "2026", "trecho": "a constituição de garantias sobre ativos não circulantes, conforme detalhado na petição de ID 10601514706. O pedido encontra amparo legal e fático. O art. 69-A da Lei nº 11.101/2005 (LRF) autoriza expressamente a celebração de tais contratos durante a recuperação judicial, mediante autorização do ju"}, {"processo": "5023837-81.2026.8.21.7000", "tribunal": "TJRS", "grau": "G2", "data": "2026-02-05", "ano": "2026", "trecho": "RF, bem como a necessidade de homologação de modificações de créditos trabalhistas. Em 14 de novembro de 2024, o Juízo autorizou o Financiamento DIP (Art. 69-A LRF), e, após o decurso do prazo editalício (Evento 494) sem manifestação dos credores (Art. 66, § 1º, I, da LRF), a AJ postulou a expedição"}, {"processo": "0037492-27.2012.8.09.0051", "tribunal": "TJGO", "grau": "G1", "data": "2026-01-21", "ano": "2026", "trecho": "alienação dos bens tidos como prescindíveis para a manutenção das atividades empresariais da recuperanda.\" Por fim, houve o deferimento do pedido de dip financing No evento 1140, foi publicado novo edital. JM TERRRAPLANAGEM E CONSTRUÇÕES LTDA., no evento 1143, procedeu com a regularização de sua re"}, {"processo": "1044588-87.2024.8.26.0114", "tribunal": "TJSP", "grau": "G1", "data": "2026-01-21", "ano": "2026", "trecho": "lhões e oitenta mil reais), conforme laudo de fls. 6589/6700. A AJ apresentou parecer favorável às fls. 6581/6588. Decido. Verifico que a operação de DIP Financing apresentada pelas Recuperandas atende aos requisitos legais, tendo em vista que o bem a ser onerado não é essencial à atividade da Recup"}, {"processo": "1054730-61.2025.8.26.0100", "tribunal": "TJSP", "grau": "G1", "data": "2026-01-16", "ano": "2026", "trecho": "or se utilizar da via recursal para discutir a natureza do crédito. Por fim, argumenta que, ainda que o crédito do Banco Sofisa seja reconhecido como extraconcursal, os veículos penhorados não foram dados em garantia às CCBs, daí porque os bens podem ser alienados em garantia ao financiamento DIP (f"}, {"processo": "0016255-81.2025.8.16.0019", "tribunal": "TJPR", "grau": "G1", "data": "2026-01-07", "ano": "2026", "trecho": "as vias judiciais ou extrajudiciais ordinárias, solicitarem a exibição de documentos. 3.2.7. Autorização para contratação de empréstimo na modalidade DIP Financing O que os Autores solicitam no mov. 76.1 é a autorização judicial para celebração de contrato de financiamento, mediante oneração do imóv"}, {"processo": "8077677-81.2025.8.05.0000", "tribunal": "TJBA", "grau": "G2", "data": "2025-12-22", "ano": "2025", "trecho": "ntido: AGRAVO DE INSTRUMENTO. RECUPERAÇÃO JUDICIAL. DECISÃO QUE DEFERIU A AUTORIZAÇÃO PARA CONTRATAÇÃO E FORMALIZAÇÃO DE FINANCIAMENTO NA MODALIDADE \"DIP FINANCING\" EMERGENCIAL, BEM COMO PARA CONSTITUIÇÃO DE ALIENAÇÃO FIDUCIÁRIA SOBRE AS AÇÕES DE TITULARIDADE DA OI S.A . NA V. TAL. PREENCHIMENTO DOS"}, {"processo": "1000249-02.2024.8.26.0354", "tribunal": "TJSP", "grau": "G1", "data": "2025-12-22", "ano": "2025", "trecho": "e DOU PROVIMENTO aos embargos opostos, a fim de estender ao fundo (CNPJ nº 35.654.823/0001-15) os efeitos da decisão de fls. 5941/5943, no tocante ao DIP financing adicional, nos termos do contrato. Servirá a presente decisão como ofício para que a recuperanda providencie o necessário junto ao Cartó"}, {"processo": "0008807-53.2019.8.11.0004", "tribunal": "TJMT", "grau": null, "data": "2025-12-19", "ano": "2025", "trecho": "ES BASTOS Vistos e examinados. Cuida-se de EMBARGOS DE DECLARAÇÃO opostos contra a decisão que autorizou a contratação de financiamento na modalidade DIP Financing, nos termos dos arts. 47, 66, 67 e 69-A e seguintes da Lei 11.101/2005, mas condicionou a eficácia da operação ao depósito integral dos"}, {"processo": "5033694-50.2024.8.09.0051", "tribunal": "TJGO", "grau": "G1", "data": "2025-12-16", "ano": "2025", "trecho": "mov. 613). Em decisão proferida à mov. 1.012 restou deferido o pedido formulado à mov. 943 para autorizar às Recuperandas a formalização da operação DIP Financing (debtor in possession) junto ao Grupo AR3 Capital. Quanto ao pedido de tutela de urgência incidental (movs. nºs 996 e 997 aditado na mov"}, {"processo": "0817028-32.2023.8.12.0001", "tribunal": "TJMS", "grau": "G1", "data": "2025-12-16", "ano": "2025", "trecho": "I) Da ampliação da garantia (inclusão de imóvel) - \"DIP Financing\": Em agosto de 2023 os recuperandos celebraram um contrato de financiamento com o Banco Daycoval S/A, com linha de crédito de até R$ 20."}, {"processo": "5933479-15.2025.8.09.0051", "tribunal": "TJGO", "grau": null, "data": "2025-12-15", "ano": "2025", "trecho": "terlocutória atacada (evento nº1.760 dos autos originários) reconheceu a essencialidade dos bens imóveis dados em alienação fiduciária em garantia ao DIP Financing para manter as recuperandas agravadas na posse dos mesmos, sem prejuízo da validade e subsistência da aludida garantia em favor do credo"}, {"processo": "5098111-32.2024.8.21.0001", "tribunal": "TJRS", "grau": "G1", "data": "2025-12-15", "ano": "2025", "trecho": ", conforme os termos do evento 436 e os detalhamentos do evento 463, para aporte de R$ 100.000,00 (cem mil reais). O crédito decorrente terá natureza extraconcursal nos termos do Art. 84, I-B, da Lei nº 11.101/05 em caso de convolação em falência. 2. AUTORIZO a constituição da garantia de alienação"}, {"processo": "0706377-42.2017.8.02.0058", "tribunal": "TJAL", "grau": "G1", "data": "2025-12-12", "ano": "2025", "trecho": "uciária sobre o imóvel matriculado sob o nº 33658 no 1º Cartório de Registro de Imóveis de Arapiraca/AL, em garantia do crédito obtido, nos termos do art. 69-A da Lei nº 11.101/2005. A aprovação do presente Plano de Recuperação Judicial opera a novação dos créditos anteriores ao pedido de recuperaçã"}, {"processo": "1002246-38.2017.8.26.0201", "tribunal": "TJSP", "grau": "G1", "data": "2025-12-12", "ano": "2025", "trecho": "A ELETROMECÂNICA LTDA. EM RECUPERAÇÃO JUDICIAL em face da r. decisão de fls. 24.350/24.353, que indeferiu o pedido de autorização para contratação de DIP Financing. Em suas razões, a Embargante alega, em síntese, a ocorrência de omissão na decisão embargada. Sustenta que o decisum se baseou em premi"}, {"processo": "2158861-79.2025.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2025-12-10", "ano": "2025", "trecho": "judicial (fls. 4.995, item 29, de origem) e, recentemente, em decisão proferida em 22.10.2025, o juiz autorizou a tomada de empréstimo, na modalidade DIP Financing, cujo montante deverá ser utilizado para tal finalidade. Em conclusão, não conheço do agravo, por prejudicado o seu julgamento. 3. Ante"}, {"processo": "5033694-50.2024.8.09.0051", "tribunal": "TJGO", "grau": "G1", "data": "2025-11-28", "ano": "2025", "trecho": "es fiscais. Em decisão proferida à mov. 1.012 restou deferido o pedido formulado à mov. 943 para autorizar às Recuperandas a formalização da operação DIP Financing (debtor in possession) junto ao Grupo AR3 Capital. Quanto ao pedido de tutela de urgência incidental (movs. nºs 996 e 997 aditado na mov"}, {"processo": "5128032-02.2025.8.21.0001", "tribunal": "TJRS", "grau": "G1", "data": "2025-11-27", "ano": "2025", "trecho": "BRASIL S/A nos Eventos 155 e 190, por ausência dos vícios do art. 1.022 do Código de Processo Civil. b) Autorizar a celebração do Financiamento DIP (DIP Financing) junto à IOX SECURITIZADORA S/A (CNPJ n.º 18.329.685/0001-80), nos termos do art. 69-A e seguintes da Lei nº 11.101/2005, mediante a con"}, {"processo": "2352881-70.2025.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2025-11-18", "ano": "2025", "trecho": "ões judiciais incidentes sobre imóveis do empreendimento \"Ilhas do Mediterrâneo\" para fins de constituição de garantia em financiamento na modalidade Debtor in Possession (DIP), no âmbito de recuperação judicial. Conheço os embargos, porque tempestivos, e dou-lhes provimento. A obscuridade ocorre qu"}, {"processo": "1000692-90.2024.8.26.0373", "tribunal": "TJSP", "grau": "G1", "data": "2025-11-13", "ano": "2025", "trecho": "stradora Judicial (fls. 1197/1199) e a ausência de oposição por parte dos credores, DEFIRO o pedido das Recuperandas para autorizar a formalização do DIP Financing no formato apresentado pelas Recuperandas com a financiadora IOX SECURITIZADORA, nos termos da Carta de Compromisso apresentada a fls. 1"}, {"processo": "8005857-33.2025.8.05.0022", "tribunal": "TJBA", "grau": "G1", "data": "2025-11-12", "ano": "2025", "trecho": "s de declaração da Caixa Econômica Federal, refutando a alegada omissão sobre alienação fiduciária prévia e sustentando que a decisão que autorizou o DIP financing analisou adequadamente a operação conforme a legislação aplicável, destacando que o regime jurídico do DIP possui tratamento hierárquico"}, {"processo": "5033694-50.2024.8.09.0051", "tribunal": "TJGO", "grau": "G1", "data": "2025-11-12", "ano": "2025", "trecho": "cumentos complementares para embasar o pleito. É o relatório. DECIDO. Em relação ao pedido de antecipação de tutela objetivando o Financiamento DIP - DIP Financing (debtor in possession), passo a dirimir. Conforme relatado acima, as Recuperandas compareceram aos presentes autos para requerer seja au"}, {"processo": "1419284-28.2025.8.12.0000", "tribunal": "TJMS", "grau": "G2", "data": "2025-11-12", "ano": "2025", "trecho": "ição de alienação fiduciária sobre o imóvel rural denominado Fazenda São João, objeto da matrícula n 20.568, do CRI de Chapadão do Sul/MS, objeto do \"DIP Financing\", para garantir as obrigações assumidas pelo Grupo Lot em razão da Repactuação do Crédito Extraconcursal do Fundo Resp. Ltda. (Fundo de"}, {"processo": "1019693-96.2025.8.11.0000", "tribunal": "TJMT", "grau": "G2", "data": "2025-11-10", "ano": "2025", "trecho": "UNANIMIDADE, REJEITOU OS EMBARGOS. E M E N T A EMBARGOS DE DECLARAÇÃO EM AGRAVO DE INSTRUMENTO – RECUPERAÇÃO JUDICIAL – AUTORIZAÇÃO DE CONTRATAÇÃO DE DIP FINANCING – FINANCIAMENTO EXTRACONCURSAL – ART. 69-A E SEGUINTES DA LEI Nº 11.101/2005 (LRF) – ALIENAÇÃO E CESSÃO FIDUCIÁRIA DE RECEBÍVEIS, GRÃOS"}, {"processo": "0002115-18.2023.8.25.0001", "tribunal": "TJSE", "grau": "G1", "data": "2025-11-06", "ano": "2025", "trecho": "QUIPAMENTOS LTDA, MAS, PARA LHES NEGAR PROVIMENTO. INTIMEM-SE. [...] ANTE O EXPOSTO, AUTORIZO A CELEBRAÇÃO DO CONTRATO DE FINANCIAMENTO NA MODALIDADE DIP FINANCING ENTRE AS EMPRESAS EM RECUPERAÇÃO E IOX SECURITIZADORA S/A, CONFORME CARTA JUNTADA AOS AUTOS EM 03/11/2025-16:53:16H, ATÉ O LIMITE DE R$"}, {"processo": "5034171-49.2024.8.13.0702", "tribunal": "TJMG", "grau": "G1", "data": "2025-11-04", "ano": "2025", "trecho": "recursos próprios. DECIDO. A Lei nº 11.101/2005, através das significativas alterações promovidas pela Lei nº 14.112/2020, consolidou o instituto do Debtor in Possession Financing (DIP Financing) no direito pátrio, estabelecendo um regime jurídico próprio para o financiamento do devedor durante a r"}, {"processo": "1017114-78.2025.8.11.0000", "tribunal": "TJMT", "grau": null, "data": "2025-10-31", "ano": "2025", "trecho": "MPRESARIAL. AGRAVO DE INSTRUMENTO. RECUPERAÇÃO JUDICIAL. PRORROGAÇÃO DO PERÍODO DE BLINDAGEM. POSSIBILIDADE EXCEPCIONAL. FINANCIAMENTO NA MODALIDADE “DIP FINANCING”. LEGALIDADE. RECURSO DESPROVIDO. I. Caso em exame 1. Agravo de instrumento interposto contra decisão que prorrogou, de forma excepciona"}, {"processo": "2102167-90.2025.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2025-10-28", "ano": "2025", "trecho": "reli e outro - Magistrado(a) J.B. Paula Lima - Deram provimento ao recurso. V. U. - DIREITO EMPRESARIAL. AGRAVO DE INSTRUMENTO. RECUPERAÇÃO JUDICIAL. DIP FINANCING. GARANTIA. PREFERÊNCIA. PROVIMENTO DO RECURSO. INSURGÊNCIA CONTRA DECISÃO QUE NÃO RECONHECEU A PREFERÊNCIA DA GARANTIA FIDUCIÁRIA SOBRE"}, {"processo": "5294279-19.2025.8.09.0029", "tribunal": "TJGO", "grau": "G2", "data": "2025-10-20", "ano": "2025", "trecho": "ara afastar as multas por litigância de má-fé e caráter protelatório, mantendo, contudo, a autorização para contratação de financiamento emergencial (DIP Financing), com garantia fiduciária sobre bem pertencente a terceiro, além da competência do juízo da recuperação judicial para deliberar sobre me"}, {"processo": "0812922-73.2023.8.14.0000", "tribunal": "TJPA", "grau": null, "data": "2025-10-17", "ano": "2025", "trecho": "Dourado, nos autos da Recuperação Judicial nº 0002487-69.2019.8.14.9100, que autorizou as agravadas celebrar contrato de financiamento na modalidade Debtor in Possession Financing (“DIP”), mediante a constituição de garantias sobre bens e direitos. É breve o relato. DECIDO. Conforme se depreende de"}, {"processo": "0240066-90.2023.8.06.0001", "tribunal": "TJCE", "grau": null, "data": "2025-10-16", "ano": "2025", "trecho": "inha companhia o parecer do Ministério Público e do Administrador Judicial, mantenho a decisão por seus próprios fundamentos.\" Isto é - a rejeição do Dip Financing porque, além da quantia mostrar-se irrisória frente ao total dos valores devidos pelas recuperandas, a garantia dada à proposta é muito"}, {"processo": "2321933-48.2025.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2025-10-15", "ano": "2025", "trecho": "alhista, contra r. decisão proferida pelo juízo da recuperação judicial que homologou a operação de financiamento na modalidade Debtor-in-Possession (DIP Financing) em favor da empresa recuperanda, ARTEC PISOS E REVESTIMENTOS LTDA.. O agravante sustenta, em resumo, que a agravada descumpre reiterada"}, {"processo": "8005857-33.2025.8.05.0022", "tribunal": "TJBA", "grau": "G1", "data": "2025-10-08", "ano": "2025", "trecho": "empresariais dos Recuperandos\", ressaltando ainda \"a urgência diante da proximidade do período destinado ao plantio\". Pois bem. Decido. O contrato de DIP Financing é a ferramenta prevista na Lei 11.101/2005 para possibilitar e estimular o financiamento da empresa em crise, buscando o seu soerguiment"}, {"processo": "5300131-14.2025.8.09.0000", "tribunal": "TJGO", "grau": null, "data": "2025-10-02", "ano": "2025", "trecho": "DIREITO PROCESSUAL CIVIL E EMPRESARIAL. EMBARGOS DE DECLARAÇÃO. OMISSÃO. CONTRADIÇÃO. RECUPERAÇÃO JUDICIAL. CONSOLIDAÇÃO SUBSTANCIAL. “DIP FINANCING”. GARANTIA. REJEIÇÃO.I. CASO EM EXAME1. Trata-se de embargos de declaração opostos contra acórdão que negou provimento ao recurso de agr"}, {"processo": "2308886-07.2025.8.26.0000", "tribunal": "TJSP", "grau": "G2", "data": "2025-10-02", "ano": "2025", "trecho": "o de crédito, os quais somente poderão prosseguir em caso de retomada do processo de recuperação; (iii) o regramento específico acerca do contrato de dip financing, de modo a manter eficazes e exigíveis apenas as obrigações decorrentes dos valores já tomados, ficando suspensa a disponibilização de n"}, {"processo": "5000205-22.2020.8.21.0053", "tribunal": "TJRS", "grau": "G1", "data": "2025-09-29", "ano": "2025", "trecho": "ROMAN DESPACHO/DECISÃO defiro o pedido de autorização para contratação de financiamento na modalidade DIP , ressalvada a observância incondicional do art. 69-C, caput e § 1º, da LRF, permanecendo a nova garantia (alienação fiduciária à IOX Securitizadora S.A.) subordinada à hipoteca do credor Banco"}, {"processo": "5005360-43.2023.8.13.0693", "tribunal": "TJMG", "grau": "G1", "data": "2025-09-22", "ano": "2025", "trecho": "O EMPRÉSTIMO DIP Os Recuperandos (ID 10531500863) informaram que tomaram empréstimo de R$ 2.000.000,00 (dois milhões de reais) por meio da modalidade DIP Financing, com o fornecimento de imóveis em alienação fiduciária como garantia, nos termos autorizados por este Juízo ao ID 10251396555. Noticiam"}, {"processo": "5081915-34.2024.8.24.0023", "tribunal": "TJSC", "grau": "G1", "data": "2025-09-22", "ano": "2025", "trecho": "o do dispositivo GPS formulado no evento 804, PET1. evento 827, PED LIMINAR/ANT TUTE1 Assim, autorizo a prosseguir com a formalização da operação de \"DIP FINANCING\", mediante constituição de garantia ofertada no evento 827, PED LIMINAR/ANT TUTE1, mediante a fiscalização direta do administrador judic"}, {"processo": "1019693-96.2025.8.11.0000", "tribunal": "TJMT", "grau": "G2", "data": "2025-09-19", "ano": "2025", "trecho": "iu a seguinte decisão: POR UNANIMIDADE, DESPROVEU O RECURSO. E M E N T A AGRAVO DE INSTRUMENTO – RECUPERAÇÃO JUDICIAL – AUTORIZAÇÃO DE CONTRATAÇÃO DE DIP FINANCING – FINANCIAMENTO EXTRACONCURSAL – ART. 69-A E SEGUINTES DA LEI Nº 11.101/2005 (LRF) – ALIENAÇÃO E CESSÃO FIDUCIÁRIA DE RECEBÍVEIS, GRÃOS"}, {"processo": "1000579-51.2018.8.26.0146", "tribunal": "TJSP", "grau": "G1", "data": "2025-09-19", "ano": "2025", "trecho": "judicial, HOMOLOGO os instrumentos contratuais apresentados pela empresa recuperanda referentes ao financiamento na modalidade Debtor-in-Possession (DIP Financing) para todos os fins de direito. - ADV: CINTIA CRISTINA SILVERIO SANTOS (OAB 300907/SP), PAULO ROBERTO JOAQUIM DOS REIS (OAB 23134/SP), T"}, {"processo": "2285866-84.2025.8.26.0000", "tribunal": "TJSP", "grau": null, "data": "2025-09-16", "ano": "2025", "trecho": "agravadas, diante da manifestação favorável da Administradora Judicial e do Ministério Público, autorizou a celebração do contrato de financiamento (DIP Financing) com o Banco Daycoval, nos termos dos artigos 69-A a 69-F e 84, inciso I-B, da Lei 11.101/2005, condicionando a liberação de cada tranch"}, {"processo": "1011030-89.2022.8.26.0019", "tribunal": "TJSP", "grau": "G1", "data": "2025-09-15", "ano": "2025", "trecho": "o de crédito, os quais somente poderão prosseguir em caso de retomada do processo de recuperação; (iii) o regramento específico acerca do contrato de dip financing, de modo a manter eficazes e exigíveis apenas as obrigações decorrentes dos valores já tomados, ficando suspensa a disponibilização de n"}, {"processo": "0006553-08.2025.8.16.0021", "tribunal": "TJPR", "grau": "G1", "data": "2025-09-05", "ano": "2025", "trecho": "tos contendo a relação de bens particulares dos sócios e/ou administradores da devedora. 6. Autorização para contratação de empréstimos na modalidade DIP Financing Indefiro o pedido de autorização para contratação de empréstimos na modalidade DIP Financing, considerando que ainda não se possibilitou"}, {"processo": "5300914-16.2025.8.09.0029", "tribunal": "TJGO", "grau": null, "data": "2025-09-02", "ano": "2025", "trecho": "ADOS: SAMIR DE PAULA DIPE E OUTROS RELATOR: DES. ELISEU JOSÉ TAVEIRA VIEIRA Ementa: DIREITO EMPRESARIAL. AGRAVO DE INSTRUMENTO. RECUPERAÇÃO JUDICIAL. DIP FINANCING. DESISTÊNCIA RECURSAL. HOMOLOGAÇÃO. RECURSO PREJUDICADO. I. CASO EM EXAME 1. Agravo de Instrumento interposto diante de decisão proferid"}, {"processo": "1013149-92.2025.8.11.0000", "tribunal": "TJMT", "grau": "G2", "data": "2025-08-28", "ano": "2025", "trecho": "damentada a prorrogação deferida. Quanto ao DIP Finance, a decisão agravada foi igualmente cuidadosa ao autorizar a contratação, feita sob a égide do art. 69-A e seguintes da Lei nº 11.101/2005, que contemplam a possibilidade de captação de recursos para garantir a continuidade das atividades empres"}, {"processo": "1187606-14.2024.8.26.0100", "tribunal": "TJSP", "grau": "G1", "data": "2025-08-19", "ano": "2025", "trecho": "ção): às requerentes; em seguida, manifestem-se sucessivamente AJ e MP. Fls. 2142-2144 e 2148-2150 (AJ e MP manifestam-se favoravelmente ao pedido de DIP Financing): tendo em vista a consecução do objeto social da correquerente PLC e a natureza das obras realizáveis no empreendimento (Portal VI), au"}, {"processo": "5294279-19.2025.8.09.0029", "tribunal": "TJGO", "grau": "G2", "data": "2025-08-15", "ano": "2025", "trecho": "Segundo Grau Ementa: DIREITO EMPRESARIAL E PROCESSUAL CIVIL. AGRAVOS DE INSTRUMENTO. RECUPERAÇÃO JUDICIAL. CONTRATAÇÃO DE FINANCIAMENTO EMERGENCIAL (DIP FINANCING). IMÓVEL RURAL OFERECIDO COMO GARANTIA DE ALIENAÇÃO FIDUCIÁRIA. IMPUGNAÇÃO POR CREDORES E TERCEIROS. COMPETÊNCIA DO JUÍZO DA RECUPERAÇÃO"}, {"processo": "2241283-14.2025.8.26.0000", "tribunal": "TJSP", "grau": null, "data": "2025-08-11", "ano": "2025", "trecho": "ferido. Grave divergência entre a lista de credores apresentada pela recuperanda e a relação oferecida pelo administrador judicial. Indeferimento do \"Dip financing\" ocorrera no Juízo \"a quo\" sem regular recurso. Empresa que se encontra inativa há mais de um ano, o que se dera no período da proteção"}, {"processo": "0240066-90.2023.8.06.0001", "tribunal": "TJCE", "grau": null, "data": "2025-08-08", "ano": "2025", "trecho": "e ID 164182855 - com pedido de reconsideração. Pois bem. A decisão agravada trata-se de embargos de declaração opostos contra decisão que indefere o DIP Financing, em razão da proposta apresentada mostrar-se irrisória frente ao total dos valores devidos pelas recuperandas e a garantia dada ser deve"}, {"processo": "5300131-14.2025.8.09.0000", "tribunal": "TJGO", "grau": null, "data": "2025-07-28", "ano": "2025", "trecho": "m Segundo Grau Ementa: DIREITO EMPRESARIAL E PROCESSUAL CIVIL. AGRAVO DE INSTRUMENTO. RECUPERAÇÃO JUDICIAL. CONTRATAÇÃO DE FINANCIAMENTO EMERGENCIAL (DIP FINANCING). IMÓVEL RURAL OFERECIDO COMO GARANTIA DE ALIENAÇÃO FIDUCIÁRIA. IMPUGNAÇÃO POR CREDORES E TERCEIROS. COMPETÊNCIA DO JUÍZO DA RECUPERAÇÃO"}, {"processo": "1013149-92.2025.8.11.0000", "tribunal": "TJMT", "grau": "G2", "data": "2025-07-22", "ano": "2025", "trecho": "damentada a prorrogação deferida. Quanto ao DIP Finance, a decisão agravada foi igualmente cuidadosa ao autorizar a contratação, feita sob a égide do art. 69-A e seguintes da Lei nº 11.101/2005, que contemplam a possibilidade de captação de recursos para garantir a continuidade das atividades empres"}, {"processo": "0022787-54.2023.8.27.2729", "tribunal": "TJTO", "grau": "G1", "data": "2025-07-10", "ano": "2025", "trecho": "ONES SOLDERA CARNEIRO DESPACHO/DECISÃO 1 - Observo que este juízo homologou o plano de recuperação judicial da recuperanda e homologou a aprovação do DIP Financing, cujos termos e conteúdos foram apresentados, e livremente discutidos e aprovados em Assembleia Geral de Credores, em conformidade com a"}, {"processo": "1032043-53.2024.8.11.0000", "tribunal": "TJMT", "grau": "G2", "data": "2025-07-07", "ano": "2025", "trecho": "OS. E M E N T A Ementa: DIREITO EMPRESARIAL E PROCESSUAL CIVIL. EMBARGOS DE DECLARAÇÃO EM AGRAVO DE INSTRUMENTO. RECUPERAÇÃO JUDICIAL. AUTORIZAÇÃO DE DIP FINANCING. ALEGADA OMISSÃO QUANTO À FALTA DE AUTORIZAÇÃO DO COMITÊ DE CREDORES E À EXTENSÃO DA GARANTIA. INEXISTÊNCIA DE VÍCIOS NO JULGADO. RECURS"}, {"processo": "1000138-18.2024.8.26.0354", "tribunal": "TJSP", "grau": "G1", "data": "2025-07-03", "ano": "2025", "trecho": "FERIDO. GRAVE DIVERGÊNCIA ENTRE A LISTA DE CREDORES APRESENTADA PELA RECUPERANDA E A RELAÇÃO OFERECIDA PELO ADMINISTRADOR JUDICIAL. INDEFERIMENTO DO “DIP FINANCING” OCORRERA NO JUÍZO “A QUO” SEM REGULAR RECURSO. EMPRESA QUE SE ENCONTRA INATIVA HÁ MAIS DE UM ANO, O QUE SE DERA NO PERÍODO DA PROTEÇÃO"}, {"processo": "0867969-88.2023.8.19.0001", "tribunal": "TJRJ", "grau": "G1", "data": "2025-06-30", "ano": "2025", "trecho": "outros AGRAVO DE INSTRUMENTO. RECUPERAÇÃO JUDICIAL. DECISÃO QUE DEFERIU A AUTORIZAÇÃO PARA CONTRATAÇÃO E FORMALIZAÇÃO DE FINANCIAMENTO NA MODALIDADE “DIP FINANCING” EMERGENCIAL, BEM COMO PARA CONSTITUIÇÃO DE ALIENAÇÃO FIDUCIÁRIA SOBRE AS AÇÕES DE TITULARIDADE DA OI S.A. NA V. TAL. PREENCHIMENTO DOS"}, {"processo": "1000579-51.2018.8.26.0146", "tribunal": "TJSP", "grau": "G1", "data": "2025-06-26", "ano": "2025", "trecho": "- Refer Representação Feriani - - Vibrantz Materiais e Cores Ltda e outros - Vistos. Autorizo a realização do contrato de financiamento na modalidade Debtor in Possession (\"DIP\"). Justifica-se o deferimento, pois do ponto de vista material e dadas as condições fáticas da Recuperanda e do modelo prop"}, {"processo": "1019693-96.2025.8.11.0000", "tribunal": "TJMT", "grau": "G2", "data": "2025-06-23", "ano": "2025", "trecho": "VENDA LTDA E OUTROS. AGRAVO DE INSTRUMENTO – AÇÃO DE RECUPERAÇÃO JUDICIAL – DECISÃO QUE DEFERIU PEDIDO DE CONTRATAÇÃO DE FINANCIAMENTO NA MODALIDADE “DIP FINANCING” – AUSÊNCIA DO RISCO IMEDIATO DE DANO – INEXISTÊNCIA DE CONDIÇÕES PARA CONCESSÃO DE EFEITO SUSPENSIVO (PARÁGRAFO ÚNICO DO ART. 995 DO CP"}, {"processo": "0240066-90.2023.8.06.0001", "tribunal": "TJCE", "grau": null, "data": "2025-06-16", "ano": "2025", "trecho": "CREDITÓRIOS NÃO PADRONIZADOS e por SUCOS DO BRASIL S/A e OUTRAS em relação à decisão proferida às fls. 3034/3038, que não autorizou a homologação do DIP Financing. No recurso oposto por CREDIT PARTNERS, a empresa arguiu a ocorrência de omissão do julgado que deixou de apreciar os elementos trazidos"}, {"processo": "5838563-23.2024.8.09.0051", "tribunal": "TJGO", "grau": "G2", "data": "2025-06-10", "ano": "2025", "trecho": "ux Ferreira da Silva Júnior, que assim decidiu, conforme ementa abaixo transcrita: “DIREITO EMPRESARIAL. AGRAVO DE INSTRUMENTO. RECUPERAÇÃO JUDICIAL. DIP FINANCING. GARANTIA FIDUCIÁRIA. RECURSO DESPROVIDO.I. CASO EM EXAME1. Agravo de Instrumento interposto pela Agência Goiana de Infraestrutura e Tra"}, {"processo": "1032043-53.2024.8.11.0000", "tribunal": "TJMT", "grau": "G2", "data": "2025-05-23", "ano": "2025", "trecho": "u a seguinte decisão: POR UNANIMIDADE, NEGOU PROVIMENTO AO RECURSO. E M E N T A Ementa: Agravo de instrumento. Recuperação judicial. Autorização para dip financing com garantia real. Crédito extraconcursal da agravante. Ausência de interesse jurídico direto. art. 49 da lei nº 11.101/2005. financiame"}, {"processo": "5300131-14.2025.8.09.0000", "tribunal": "TJGO", "grau": null, "data": "2025-05-06", "ano": "2025", "trecho": "TINS DIPE, JOSÉ EDUARDO MARTINS DIPE e JOÃO VITOR MARTINS DIPE, com os quais compõe o Grupo Recuperando “AGRODIPE”, a qual autorizou a contratação de Debtor in Possession (“DIP”) Financing, ou financiamento DIP emergencial, tendo como garantia de alienação fiduciária o imóvel rural “Fazenda Manah”,"}, {"processo": "5294279-19.2025.8.09.0029", "tribunal": "TJGO", "grau": "G2", "data": "2025-05-06", "ano": "2025", "trecho": "opostos pelo agravante, impondo-lhe dupla multa por litigância de má-fé, no importe de 2% e 10% do valor da causa; e (iii) autorizou a contratação de Debtor in Possession (“DIP”) Financing, ou financiamento DIP emergencial, tendo como garantia de alienação fiduciária o imóvel rural “Fazenda Manah”,"}, {"processo": "5300914-16.2025.8.09.0029", "tribunal": "TJGO", "grau": null, "data": "2025-04-30", "ano": "2025", "trecho": "ETI APARECIDA POPOLIM MARTINS DIPE, JOSÉ EDUARDO MARTINS DIPE, JOÃO VITOR MARTINS DIPE e LEONARDO BARIONE DE SOUSA, a qual autorizou a contratação de Debtor in Possession (“DIP”) Financing, ou financiamento DIP emergencial, conforme requerido pelo Grupo Recuperando, com a constituição de garantia de"}, {"processo": "5427296-60.2024.8.09.0006", "tribunal": "TJGO", "grau": "G1", "data": "2025-04-28", "ano": "2025", "trecho": "cados na inicial. 1. DILIGÊNCIAS NECESSÁRIAS Inicialmente, considerando que foi autorizado aos devedores celebrarem operação de crédito na modalidade DIP Financing – Debtor in Possession Financing com a empresa AGREX DO BRASIL LTDA, mediante a constituição de garantia fiduciária sobre o imóvel denom"}, {"processo": "5033694-50.2024.8.09.0051", "tribunal": "TJGO", "grau": "G1", "data": "2025-04-24", "ano": "2025", "trecho": "eferidas empresas, com efeitos ex nunc. Pela decisão da mov. 511 restou deferido pedido das recuperandas de autorização para formalização da operação DIP Financing (debtor in possession) junto à OXSS Securitizadora S.A.. Ofício comunicatório à mov. 523 informando concessão de tutela recursal para \"s"}, {"processo": "1023842-63.2024.8.11.0003", "tribunal": "TJMT", "grau": null, "data": "2025-04-09", "ano": "2025", "trecho": "itos previstos nos artigos 48 e 51 da Lei nº 11 .101/2005)- Decisão mantida – RECURSO DESPROVIDO. RECUPERAÇÃO JUDICIAL – CONTRATO DE FINANCIAMENTO - \"DIP FINANCING\" - Art. 69-E, Lei nº 11.101/2005 - A lei não exige que todos os credores sejam consultados sobre as condições de um possível financiamen"}, {"processo": "5033694-50.2024.8.09.0051", "tribunal": "TJGO", "grau": "G1", "data": "2025-03-06", "ano": "2025", "trecho": "referidas empresas, com efeitos ex nunc.Pela decisão da mov. 511 restou deferido pedido das recuperandas de autorização para formalização da operação DIP Financing (debtor in possession) junto à OXSS Securitizadora S.A..Ofício comunicatório à mov. 523 informando concessão de tutela recursal para \"su"}, {"processo": "5838563-23.2024.8.09.0051", "tribunal": "TJGO", "grau": "G2", "data": "2025-02-13", "ano": "2025", "trecho": "DIREITO PROCESSUAL CIVIL. EMBARGOS DE DECLARAÇÃO. AGRAVO DE INSTRUMENTO. RECUPERAÇÃO JUDICIAL. DIP FINANCING. ALEGAÇÃO DE OMISSÃO. INEXISTÊNCIA. RECURSO REJEITADO. I. CASO EM EXAME Embargos de Declaração opostos pela Agência Goiana de Infraestru"}, {"processo": "5033694-50.2024.8.09.0051", "tribunal": "TJGO", "grau": "G1", "data": "2025-02-06", "ano": "2025", "trecho": "eferidas empresas, com efeitos ex nunc. Pela decisão da mov. 511 restou deferido pedido das recuperandas de autorização para formalização da operação DIP Financing (debtor in possession) junto à OXSS Securitizadora S.A.. Ofício comunicatório à mov. 523 informando concessão de tutela recursal para \"s"}, {"processo": "0800654-39.2019.8.12.0046", "tribunal": "TJMS", "grau": "G2", "data": "2024-12-16", "ano": "2024", "trecho": "os: AUTORIZO a celebrar o Financiamento DIP nos moldes apresentados, nos termos da CPR-Financeira anexa e demais documentos, confirmando sua natureza extraconcursal, nos termos dos artigos 69-A a 69-F e 84, IB, da LRF, inclusive para eventual superveniente falência dos Recuperandos. AUTORIZO a const"}, {"processo": "0926086-72.2023.8.19.0001", "tribunal": "TJRJ", "grau": "G1", "data": "2024-11-14", "ano": "2024", "trecho": "COMECIAIS DE TELECOMUNICAÇÕES LTDA. – em Recuperação Judicial, para discutir Contrato de Mútuo, com Concessão de Imediata Carta Fiança, na Modalidade Dip Financing. No caso, a primeira observação que merece atenção se refere à formalização do contrato em si. O “dip financing” firmado entre a recuper"}, {"processo": "1007688-76.2024.8.11.0000", "tribunal": "TJMT", "grau": null, "data": "2024-10-24", "ano": "2024", "trecho": "sitos previstos nos artigos 48 e 51 da Lei nº 11.101/2005)- Decisão mantida – RECURSO DESPROVIDO. RECUPERAÇÃO JUDICIAL – CONTRATO DE FINANCIAMENTO - \"DIP FINANCING\" - Art. 69-E, Lei nº 11.101/2005 - A lei não exige que todos os credores sejam consultados sobre as condições de um possível financiamen"}, {"processo": "0169521-37.2022.8.17.2001", "tribunal": "TJPE", "grau": "G1", "data": "2024-06-10", "ano": "2024", "trecho": "nto. Ao homologar o financiamento DIP e a transação individual com a PGFN (ID 151624724), este Juízo o fez amparado, de forma específica, na norma do Art. 69-A e seguintes e 84-I da Lei n. 11.101/05 e, em uma visão holística, no princípio da preservação da atividade empresarial, presente no art. 47"}, {"processo": "0000451-34.2021.8.16.0045", "tribunal": "TJPR", "grau": "G1", "data": "2022-08-19", "ano": "2022", "trecho": "de propriedade da recuperanda. Recuperanda manifestou que a garantia de 50% recai exclusivamente sobre o imóvel com matrícula 23.863. Foi deferido o Dip Financing (seq.1737-item II) da proposta apresentada na seq.1689, ou seja, limitada a garantia de 50% sobre o imóvel com matrícula 23.863 do 2º SR"}, {"processo": "1015570-94.2021.8.11.0000", "tribunal": "TJMT", "grau": null, "data": "2022-07-22", "ano": "2022", "trecho": "AL DA EMPRESA RECUPERANDA ESTÁ SITUADA EM CUIABÁ/MT – ARGUIÇÃO REJEITADA – MANIFESTAÇÃO DE DISCORDÂNCIA À HOMOLOGAÇÃO DO FINANCIAMENTO NA MODALIDADE “DIP FINANCING” – LEGALIDADE DO PACTO QUE LEGITIMA A HOMOLOGAÇÃO – PREENCHIMENTO DOS REQUISITOS PREVISTOS NO ART. 69-A A 69-F DA LEI 11.101/2005 – DECI"}, {"processo": "0001540-26.2022.8.16.0185", "tribunal": "TJPR", "grau": null, "data": "2022-05-23", "ano": "2022", "trecho": "ve ser deferido, tendo em vista a operação para a qual se pretende autorização estar devidamente prevista na Lei n. 11.101/2005, no seu artigo 69-A: “Art. 69-A. Durante a recuperação judicial, nos termos dos arts. 66 e 67 desta Lei, o juiz poderá, depois de ouvido o Comitê de Credores, autorizar a c"}, {"processo": "0000451-34.2021.8.16.0045", "tribunal": "TJPR", "grau": "G1", "data": "2022-05-19", "ano": "2022", "trecho": "Estado do Paraná manifestou na intimação da recuperanda para apresentar a certidão de regularidade fiscal. A decisão da seq.1737 (item II) deferiu o DIP Financing com afirmação da recuperanda de adesão ao Programa Retoma Paraná, regularizando seu passivo fiscal estadual, ocorrendo o pagamento das 0"}, {"processo": "0000451-34.2021.8.16.0045", "tribunal": "TJPR", "grau": "G1", "data": "2022-03-25", "ano": "2022", "trecho": "scumprimento e má-fé. Analisado e decidido no item IV da seq.1686. II. Seq. 1689. Recuperanda manifestou em reconsideração da decisão que indeferiu o Dip Financing e autorização para venda direta sem a realização de leilão público. O autor na vervade alterou seu pedido, afirmando que os recursos não"}, {"processo": "0000451-34.2021.8.16.0045", "tribunal": "TJPR", "grau": "G1", "data": "2022-02-24", "ano": "2022", "trecho": "o de contas com as vendas. Concluiu favorável a alienação de 19 caminhões para capital e giro e adimplemento das obrigações correntes. Com relação ao Dip financing da seq.1591, esclareceu que manifestou contrária em fato pretérito, o qual foi indeferido. Informou que as inconsistências das demonstra"}, {"processo": "0000451-34.2021.8.16.0045", "tribunal": "TJPR", "grau": "G1", "data": "2022-02-14", "ano": "2022", "trecho": "úncia de prazo”, uma vez que o sistema automaticamente encerra o prazo das partes.” II. Seq.1591 e Seq.1616. Recuperanda manifestou no deferimento de Dip Financing no valor de R$ 15.000.000,00 e baixas de restrição de imóvel. III. Seq.1618 e seq.1619. Administradora Judicial informou que os débitos"}];
+
+function formatarData(iso) {
+  if (!iso) return "";
+  const [a, m, d] = iso.split("-");
+  return `${d}/${m}/${a}`;
+}
+
+function grauLabel(g) {
+  if (g === "G1") return "1&ordm; grau";
+  if (g === "G2") return "2&ordm; grau";
+  return null;
+}
+
+const docket = document.getElementById("docket");
+const buscaEl = document.getElementById("busca");
+const tribEl = document.getElementById("filtroTribunal");
+const ordEl = document.getElementById("ordenar");
+const contagemEl = document.getElementById("contagem");
+
+function renderDocket() {
+  const termo = buscaEl.value.trim().toLowerCase();
+  const trib = tribEl.value;
+  const ord = ordEl.value;
+
+  let lista = DADOS.filter(r => {
+    if (trib && r.tribunal !== trib) return false;
+    if (!termo) return true;
+    return (r.processo + " " + r.tribunal + " " + r.trecho).toLowerCase().includes(termo);
+  });
+
+  lista = lista.slice().sort((a, b) => {
+    if (ord === "data-asc") return a.data < b.data ? -1 : a.data > b.data ? 1 : 0;
+    if (ord === "tribunal") return a.tribunal < b.tribunal ? -1 : a.tribunal > b.tribunal ? 1 : (a.data < b.data ? 1 : -1);
+    return a.data > b.data ? -1 : a.data < b.data ? 1 : 0; // data-desc
+  });
+
+  docket.innerHTML = "";
+  const frag = document.createDocumentFragment();
+
+  for (const r of lista) {
+    const row = document.createElement("article");
+    row.className = "docket-row";
+
+    const head = document.createElement("div");
+    head.className = "docket-head";
+
+    const tribBadge = document.createElement("span");
+    tribBadge.className = "badge badge--trib";
+    tribBadge.textContent = r.tribunal;
+    head.appendChild(tribBadge);
+
+    const gl = grauLabel(r.grau);
+    if (gl) {
+      const grauBadge = document.createElement("span");
+      grauBadge.className = "badge badge--grau";
+      grauBadge.innerHTML = gl;
+      head.appendChild(grauBadge);
+    }
+
+    const proc = document.createElement("span");
+    proc.className = "processo";
+    proc.textContent = r.processo;
+    head.appendChild(proc);
+
+    const data = document.createElement("span");
+    data.className = "data";
+    data.textContent = formatarData(r.data);
+    head.appendChild(data);
+
+    row.appendChild(head);
+
+    const det = document.createElement("details");
+    det.className = "trecho-det";
+    const sum = document.createElement("summary");
+    sum.textContent = "ver trecho";
+    det.appendChild(sum);
+    const p = document.createElement("p");
+    p.className = "trecho";
+    p.textContent = r.trecho;
+    det.appendChild(p);
+    row.appendChild(det);
+
+    frag.appendChild(row);
+  }
+  docket.appendChild(frag);
+  contagemEl.textContent = `${lista.length} de ${DADOS.length}`;
+}
+
+buscaEl.addEventListener("input", renderDocket);
+tribEl.addEventListener("change", renderDocket);
+ordEl.addEventListener("change", renderDocket);
+renderDocket();
+
+// tooltip para os graficos
+const tip = document.getElementById("tooltip");
+document.querySelectorAll(".bar-row, .chart-svg--grau g[data-tip]").forEach(el => {
+  el.addEventListener("mouseenter", () => {
+    tip.textContent = el.getAttribute("data-tip");
+    tip.hidden = false;
+  });
+  el.addEventListener("mousemove", (e) => {
+    tip.style.left = (e.clientX + 14) + "px";
+    tip.style.top = (e.clientY + 14) + "px";
+  });
+  el.addEventListener("mouseleave", () => { tip.hidden = true; });
+});
+</script>
+</body>
+</html>
